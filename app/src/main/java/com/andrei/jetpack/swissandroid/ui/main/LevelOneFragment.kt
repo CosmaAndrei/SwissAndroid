@@ -6,16 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.observe
+import com.andrei.jetpack.swissandroid.databinding.FragmentLvlOneBinding
 import com.andrei.jetpack.swissandroid.ui.main.adapters.ProductsRVAdapter
 import com.andrei.jetpack.swissandroid.ui.main.viewmodels.LvlOneProductsViewModel
 import com.andrei.jetpack.swissandroid.viewmodel.ViewModelProviderFactory
 import dagger.android.support.DaggerFragment
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import javax.inject.Inject
-import androidx.lifecycle.observe
-import com.andrei.jetpack.swissandroid.databinding.FragmentLvlOneBinding
 
 
 class LevelOneFragment : DaggerFragment() {
@@ -35,7 +32,8 @@ class LevelOneFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        initViewModel()
+        lvlOneProductsViewModel =
+            ViewModelProviders.of(this, providerFactory).get(LvlOneProductsViewModel::class.java)
 
         binding = FragmentLvlOneBinding.inflate(inflater, container, false)
         val adapter = ProductsRVAdapter()
@@ -52,31 +50,5 @@ class LevelOneFragment : DaggerFragment() {
             binding.hasProducts = !result.data.isNullOrEmpty()
             adapter.submitList(result.data)
         }
-    }
-
-    private fun initViewModel() {
-        lvlOneProductsViewModel =
-            ViewModelProviders.of(this, providerFactory).get(LvlOneProductsViewModel::class.java)
-        Log.d(TAG, "onCreate${lvlOneProductsViewModel.repo.name}")
-        Log.d(TAG, "onCreate${lvlOneProductsViewModel.hello}")
-        CoroutineScope(Dispatchers.IO).launch {
-            Log.d(TAG, "onCreate Coroutine started.")
-            try {
-                val response = lvlOneProductsViewModel.repo.productApi.getLvlOneProducts()
-                if (response.isSuccessful) {
-                    //Do your thing
-                    Log.d(TAG, "onCreate Products fetched.")
-                } else {
-                    //Handle unsuccessful response
-                    Log.d(TAG, "onCreate unsuccessful response.")
-
-                }
-            } catch (e: Exception) {
-                //Handle error
-                Log.d(TAG, "onCreate $e")
-
-            }
-        }
-
     }
 }
