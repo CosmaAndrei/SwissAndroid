@@ -9,8 +9,7 @@ fun ProductDTO.toPersistable() = Product(
     this.name,
     this.alias,
     this.releaseDate,
-    this.clients,
-    Date().apply { this.time = this.time + 60000 * 5 }
+    this.clients
 )
 
 fun List<ProductDTO>.toPersistable() = this.map { elem -> elem.toPersistable() }

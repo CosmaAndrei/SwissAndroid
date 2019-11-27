@@ -17,7 +17,5 @@ data class Product(
     @ColumnInfo(name = "release_date")
     val releaseDate: String,
     @ColumnInfo(name = "clients")
-    val clients: List<String>,
-    @ColumnInfo(name = "expiration_date")
-    val expirationDate: Date
+    val clients: List<String>
 )

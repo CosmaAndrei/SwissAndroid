@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.andrei.jetpack.swissandroid.util.LVL_ONE_REQ_EXPIRATION_TIME_KEY
-import com.andrei.jetpack.swissandroid.util.NETWORK_PREFERENCE
+import com.andrei.jetpack.swissandroid.util.APP_PREFERENCES
 import java.util.*
 
 class ExpiredLvlOneReqWorker(
@@ -13,13 +13,13 @@ class ExpiredLvlOneReqWorker(
 ) : CoroutineWorker(ctx, params) {
     override suspend fun doWork(): Result {
         return try {
-            val preferences = applicationContext.getSharedPreferences(NETWORK_PREFERENCE, Context.MODE_PRIVATE)
+            val preferences = applicationContext.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
             if (preferences.contains(LVL_ONE_REQ_EXPIRATION_TIME_KEY)) {
-                val expDate: Long = preferences.getLong(LVL_ONE_REQ_EXPIRATION_TIME_KEY, 0L)
-                if (expDate != 0L) {
+                val expDate = preferences.getString(LVL_ONE_REQ_EXPIRATION_TIME_KEY, "")
+                if (!expDate.equals("")) {
                     if (Date(expDate).before(Date())) {
                         with(preferences.edit()) {
-                            putLong(LVL_ONE_REQ_EXPIRATION_TIME_KEY, 0L)
+                            putString(LVL_ONE_REQ_EXPIRATION_TIME_KEY, "")
                             commit()
                         }
                     }

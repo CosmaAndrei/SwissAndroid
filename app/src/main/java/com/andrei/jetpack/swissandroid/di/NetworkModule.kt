@@ -15,11 +15,6 @@ object NetworkModule {
 
     @JvmStatic
     @Provides
-    fun provideRetrofit(): Retrofit =
-        Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build()
-
-    @JvmStatic
-    @Provides
     fun provideProductApi(retrofit: Retrofit): ProductApi = retrofit.create(ProductApi::class.java)
 
     @JvmStatic

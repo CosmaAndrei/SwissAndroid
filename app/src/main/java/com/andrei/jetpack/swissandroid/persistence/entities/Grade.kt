@@ -15,7 +15,5 @@ data class Grade (
     @ColumnInfo(name = "client_count_level_two")
     val clientCountLevelTwo: String,
     @ColumnInfo(name = "grade")
-    val grade: Double,
-    @ColumnInfo(name = "expiration_date")
-    val expirationDate: Date
+    val grade: Double
 )
