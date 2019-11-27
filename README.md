@@ -6,7 +6,6 @@ Libraries Used
 --------------
 * [Foundation][0] - Components for core system capabilities, Kotlin extensions and support for
   multidex and automated testing.
-  * [AppCompat][1] - Degrade gracefully on older versions of Android.
   * [Android KTX][2] - Write more concise, idiomatic Kotlin code.
   * [Test][3] - An Android testing framework for unit and runtime UI tests.
 * [Architecture][4] - A collection of libraries that help you design robust, testable, and
@@ -21,16 +20,13 @@ Libraries Used
      asynchronous tasks for optimal execution.
   * [WorkManager][11] - Manage your Android background jobs.
 * [UI][12] - Details on why and how to use UI Components in your apps - together or separate
-  * [Fragment][13] - A basic unit of composable UI.
-  * [Layout][14] - Lay out widgets using different algorithms.
 * Third party
-  * [Glide][15] for image loading
+  * [Retrofit][15] for network requests
   * [Kotlin Coroutines][16] for managing background threads with simplified code and reducing needs for callbacks
-  * [Dagger][17] for managing background threads with simplified code and reducing needs for callbacks
+  * [Dagger][17] for dependency injection
 
 
 [0]: https://developer.android.com/jetpack/components
-[1]: https://developer.android.com/topic/libraries/support-library/packages#v7-appcompat
 [2]: https://developer.android.com/kotlin/ktx
 [3]: https://developer.android.com/training/testing/
 [4]: https://developer.android.com/jetpack/arch/
@@ -42,9 +38,7 @@ Libraries Used
 [10]: https://developer.android.com/topic/libraries/architecture/viewmodel
 [11]: https://developer.android.com/topic/libraries/architecture/workmanager
 [12]: https://developer.android.com/guide/topics/ui
-[13]: https://developer.android.com/guide/components/fragments
-[14]: https://developer.android.com/guide/topics/ui/declaring-layout
-[15]: https://bumptech.github.io/glide/
+[15]: https://square.github.io/retrofit/
 [16]: https://kotlinlang.org/docs/reference/coroutines-overview.html
 [17]: https://developer.android.com/training/dependency-injection/dagger-android
 
