@@ -46,26 +46,7 @@ class ProductsRepo @Inject constructor(
                 override fun onActive() {
                     super.onActive()
                     CoroutineScope(IO).launch {
-                        val result: ApiResponse<List<Product>> = try {
-                            val response = productApi.getLvlOneProducts()
-
-                            if (response.isSuccessful) {
-                                // Save the date when the request was made.
-                                prefs.edit().putString(
-                                    LVL_ONE_REQ_EXPIRATION_TIME_KEY,
-                                    Date().apply { this.time = this.time + 60000 * 5 }.toString()
-                                )
-
-                                // Return the response
-                                ApiSuccessResponse(response.body()!!.products.toPersistable(), "")
-                            } else {
-                                //Handle unsuccessful response
-                                ApiErrorResponse("Something went wrong.")
-                            }
-                        } catch (e: Exception) {
-                            //Handle error
-                            ApiErrorResponse("Something went wrong. $e")
-                        }
+                        val result: ApiResponse<List<Product>> = fetchData()
 
                         withContext(Main) {
                             value = result
@@ -78,10 +59,36 @@ class ProductsRepo @Inject constructor(
 
     suspend fun refreshData() {
         withContext(IO) {
-            // TODO: Fetch products
 
+            when (val result = fetchData()) {
+                is ApiSuccessResponse -> {
+                    productDao.save(result.body)
+                }
+            }
 
-            // TODO: Update local db entries
+        }
+    }
+
+    private suspend fun fetchData(): ApiResponse<List<Product>> {
+        return try {
+            val response = productApi.getLvlOneProducts()
+
+            if (response.isSuccessful) {
+                // Save the date when the request was made.
+                prefs.edit().putString(
+                    LVL_ONE_REQ_EXPIRATION_TIME_KEY,
+                    Date().apply { this.time = this.time + 60000 * 5 }.toString()
+                )
+
+                // Return the response
+                ApiSuccessResponse(response.body()!!.products.toPersistable(), "")
+            } else {
+                //Handle unsuccessful response
+                ApiErrorResponse("Something went wrong.")
+            }
+        } catch (e: Exception) {
+            //Handle error
+            ApiErrorResponse("Something went wrong. $e")
         }
     }
 }
