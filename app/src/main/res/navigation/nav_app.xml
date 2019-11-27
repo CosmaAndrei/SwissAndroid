@@ -1,15 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/nav_garden.xml" app:startDestination="@id/splashScreenFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_garden.xml"
+    app:startDestination="@id/splashScreenFragment">
 
-    <fragment android:id="@+id/splashScreenFragment"
-              android:name="com.andrei.jetpack.swissandroid.ui.splash.SplashScreenFragment"
-              android:label="SplashScreenFragment">
-        <action android:id="@+id/action_splashScreenFragment_to_mainViewPagerFragment"
-                app:destination="@id/mainViewPagerFragment"/>
+    <fragment
+        android:id="@+id/splashScreenFragment"
+        android:name="com.andrei.jetpack.swissandroid.ui.splash.SplashScreenFragment"
+        android:label="SplashScreenFragment">
+        <action
+            android:id="@+id/action_splashScreenFragment_to_mainViewPagerFragment"
+            app:destination="@id/mainViewPagerFragment" />
     </fragment>
-    <fragment android:id="@+id/mainViewPagerFragment"
-              android:name="com.andrei.jetpack.swissandroid.ui.main.MainViewPagerFragment"
-              android:label="MainViewPagerFragment"/>
+    <fragment
+        android:id="@+id/mainViewPagerFragment"
+        android:name="com.andrei.jetpack.swissandroid.ui.main.MainViewPagerFragment"
+        android:label="MainViewPagerFragment">
+        <action
+            android:id="@+id/action_mainViewPagerFragment_to_lvlOneDetailFragment"
+            app:destination="@id/lvlOneDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/lvlOneDetailFragment"
+        android:name="com.andrei.jetpack.swissandroid.ui.detailone.LvlOneDetailFragment"
+        android:label="LvlOneDetailFragment">
+        <argument
+            android:name="plantId"
+            app:argType="integer" />
+
+    </fragment>
+
 </navigation>

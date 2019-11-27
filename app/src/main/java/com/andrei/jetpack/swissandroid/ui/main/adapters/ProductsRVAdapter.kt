@@ -5,12 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.andrei.jetpack.swissandroid.R
 import com.andrei.jetpack.swissandroid.databinding.ListItemProductBinding
 import com.andrei.jetpack.swissandroid.persistence.entities.Product
+import com.andrei.jetpack.swissandroid.ui.main.MainViewPagerFragment
+import com.andrei.jetpack.swissandroid.ui.main.MainViewPagerFragmentDirections
 import com.andrei.jetpack.swissandroid.ui.main.viewmodels.ProductItemLvlOneViewModel
 
 
@@ -31,9 +34,8 @@ class ProductsRVAdapter : ListAdapter<Product, ProductsRVAdapter.ViewHolder>(Pro
         }
 
         private fun navigateToDetails(productId: Int, view: View) {
-//            val direction = DIRECTION
-//                .ACTION(plantId)
-//            view.findNavController().navigate(direction)
+            val direction = MainViewPagerFragmentDirections.actionMainViewPagerFragmentToLvlOneDetailFragment(productId)
+            view.findNavController().navigate(direction)
         }
 
         fun bind(product: Product) {

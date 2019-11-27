@@ -1,5 +1,6 @@
 package com.andrei.jetpack.swissandroid.di
 
+import com.andrei.jetpack.swissandroid.ui.detailone.LvlOneDetailFragment
 import com.andrei.jetpack.swissandroid.ui.main.GradesFragment
 import com.andrei.jetpack.swissandroid.ui.main.LevelOneFragment
 import com.andrei.jetpack.swissandroid.ui.main.LevelTwoFragment
@@ -28,4 +29,7 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeMainViewPagerFragment(): MainViewPagerFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeLvlOneDetailFragment(): LvlOneDetailFragment
 }
