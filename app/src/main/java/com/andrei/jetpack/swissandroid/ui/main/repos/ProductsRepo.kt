@@ -75,4 +75,13 @@ class ProductsRepo @Inject constructor(
             }
         }
     }.asLiveData()
+
+    suspend fun refreshData() {
+        withContext(IO) {
+            // TODO: Fetch products
+
+
+            // TODO: Update local db entries
+        }
+    }
 }

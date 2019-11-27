@@ -14,12 +14,15 @@ import androidx.work.WorkManager
 import com.andrei.jetpack.swissandroid.databinding.FragmentLvlOneBinding
 import com.andrei.jetpack.swissandroid.ui.main.adapters.ProductsRVAdapter
 import com.andrei.jetpack.swissandroid.ui.main.viewmodels.LvlOneProductsViewModel
-import com.andrei.jetpack.swissandroid.util.LVL_ONE_REQ_EXPIRATION_TIME_KEY
 import com.andrei.jetpack.swissandroid.util.APP_PREFERENCES
+import com.andrei.jetpack.swissandroid.util.LVL_ONE_REQ_EXPIRATION_TIME_KEY
 import com.andrei.jetpack.swissandroid.util.UNIQUE_LVL_ONE_EXPIRED_PRODUCTS_WORKER
 import com.andrei.jetpack.swissandroid.viewmodel.ViewModelProviderFactory
 import com.andrei.jetpack.swissandroid.workers.ExpiredLvlOneReqWorker
 import dagger.android.support.DaggerFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -48,6 +51,9 @@ class LevelOneFragment : DaggerFragment() {
                         // The date was deleted because it expired
                         // Trigger a fetch and update the database. This should
                         // automatically trigger a refresh after the data is saved.
+                        CoroutineScope(IO).launch{
+                            lvlOneProductsViewModel.refreshData()
+                        }
                     }
                 }
             }
@@ -99,7 +105,7 @@ class LevelOneFragment : DaggerFragment() {
             WorkManager.getInstance(it).enqueueUniquePeriodicWork(
                 UNIQUE_LVL_ONE_EXPIRED_PRODUCTS_WORKER,
                 ExistingPeriodicWorkPolicy.KEEP,
-                PeriodicWorkRequestBuilder<ExpiredLvlOneReqWorker>(4, TimeUnit.MINUTES).build()
+                PeriodicWorkRequestBuilder<ExpiredLvlOneReqWorker>(1, TimeUnit.MINUTES).build()
             )
         }
     }
