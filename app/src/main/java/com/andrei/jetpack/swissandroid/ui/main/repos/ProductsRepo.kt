@@ -30,7 +30,10 @@ class ProductsRepo @Inject constructor(
         }
 
         override fun shouldFetch(data: List<Product>?): Boolean {
-            // TODO: Check if data exists or is to old.
+            val dateString = prefs.getString(LVL_ONE_REQ_EXPIRATION_TIME_KEY, "")
+            if (!dateString.equals("")) {
+                return Date(dateString).before(Date())
+            }
             return true
         }
 
