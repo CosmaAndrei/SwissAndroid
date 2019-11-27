@@ -1,5 +1,5 @@
 # Swiss Android (alpha)
-=========================
+
 App currently under development.
 
 Libraries Used
