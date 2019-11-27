@@ -1,6 +1,6 @@
 # Swiss Android (alpha)
 
-App currently under development.
+This application is currently under development.
 
 Libraries Used
 --------------
@@ -19,7 +19,7 @@ Libraries Used
   * [ViewModel][10] - Store UI-related data that isn't destroyed on app rotations. Easily schedule
      asynchronous tasks for optimal execution.
   * [WorkManager][11] - Manage your Android background jobs.
-* [UI][12] - Details on why and how to use UI Components in your apps - together or separate
+* [MVVM][12] - MVVM pattern was used for the presentation layer
 * Third party
   * [Retrofit][15] for network requests
   * [Kotlin Coroutines][16] for managing background threads with simplified code and reducing needs for callbacks
@@ -39,7 +39,7 @@ Libraries Used
 [9]: https://developer.android.com/topic/libraries/architecture/room
 [10]: https://developer.android.com/topic/libraries/architecture/viewmodel
 [11]: https://developer.android.com/topic/libraries/architecture/workmanager
-[12]: https://developer.android.com/guide/topics/ui
+[12]: https://developer.android.com/jetpack/docs/guide
 [15]: https://square.github.io/retrofit/
 [16]: https://kotlinlang.org/docs/reference/coroutines-overview.html
 [17]: https://developer.android.com/training/dependency-injection/dagger-android
