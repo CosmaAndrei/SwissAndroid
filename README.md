@@ -19,12 +19,12 @@ Libraries Used
   * [ViewModel][10] - Store UI-related data that isn't destroyed on app rotations. Easily schedule
      asynchronous tasks for optimal execution.
   * [WorkManager][11] - Manage your Android background jobs.
-* [MVVM][12] - MVVM pattern was used for the presentation layer
+* [MVVM][12] - MVVM pattern was used for the presentation layer.
 * Third party
-  * [Retrofit][15] for network requests
-  * [Kotlin Coroutines][16] for managing background threads with simplified code and reducing needs for callbacks
-  * [Dagger][17] for dependency injection
-  * [Timber][18] for logging
+  * [Retrofit][15] for network requests.
+  * [Kotlin Coroutines][16] for managing background threads with simplified code and reducing needs for callbacks.
+  * [Dagger][17] for dependency injection.
+  * [Timber][18] for logging.
 
 
 
