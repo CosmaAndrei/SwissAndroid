@@ -17,9 +17,9 @@ import java.util.*
 import javax.inject.Inject
 
 class ProductsRepo @Inject constructor(
-    val productApi: ProductApi,
-    val productDao: ProductDao,
-    val prefs: SharedPreferences
+    private val productApi: ProductApi,
+    private val productDao: ProductDao,
+    private val prefs: SharedPreferences
 ) {
     val name = "Level one repo working!! GOOD JOB!"
 
