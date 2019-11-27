@@ -13,9 +13,10 @@ class ExpiredGradesReqWorker(
 ) : CoroutineWorker(ctx, params) {
     override suspend fun doWork(): Result {
         return try {
-            val preferences = applicationContext.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
+            val preferences =
+                applicationContext.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
             if (preferences.contains(GRADES_REQ_EXPIRATION_TIME_KEY)) {
-                val expDate  = preferences.getString(GRADES_REQ_EXPIRATION_TIME_KEY, "")
+                val expDate = preferences.getString(GRADES_REQ_EXPIRATION_TIME_KEY, "")
                 if (!expDate.equals("")) {
                     if (Date(expDate).before(Date())) {
                         with(preferences.edit()) {

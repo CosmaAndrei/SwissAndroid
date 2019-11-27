@@ -10,6 +10,6 @@ interface ProductApi {
     suspend fun getLvlOneProducts(): Response<ProductsDTO>
 
     @GET("getProductsLevel2.php")
-   suspend fun getLvlTwoProducts(): Response<ProductsDTO>
+    suspend fun getLvlTwoProducts(): Response<ProductsDTO>
 
 }

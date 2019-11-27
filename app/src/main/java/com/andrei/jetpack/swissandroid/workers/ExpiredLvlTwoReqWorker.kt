@@ -13,7 +13,8 @@ class ExpiredLvlTwoReqWorker(
 ) : CoroutineWorker(ctx, params) {
     override suspend fun doWork(): Result {
         return try {
-            val preferences = applicationContext.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
+            val preferences =
+                applicationContext.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
             if (preferences.contains(LVL_TWO_REQ_EXPIRATION_TIME_KEY)) {
                 val expDate = preferences.getString(LVL_TWO_REQ_EXPIRATION_TIME_KEY, "")
                 if (!expDate.equals("")) {

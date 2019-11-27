@@ -10,9 +10,9 @@ data class Product(
     @PrimaryKey
     @ColumnInfo(name = "id")
     val uuid: Int,
-    @ColumnInfo( name = "name")
+    @ColumnInfo(name = "name")
     val name: String,
-    @ColumnInfo( name = "alias")
+    @ColumnInfo(name = "alias")
     val alias: String,
     @ColumnInfo(name = "release_date")
     val releaseDate: String,

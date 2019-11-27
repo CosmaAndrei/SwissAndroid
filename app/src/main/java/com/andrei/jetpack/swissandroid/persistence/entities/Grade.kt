@@ -5,8 +5,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.*
 
-@Entity( tableName = "grade_table")
-data class Grade (
+@Entity(tableName = "grade_table")
+data class Grade(
     @PrimaryKey
     @ColumnInfo(name = "product_id")
     val productId: String,

@@ -1,6 +1,5 @@
 package com.andrei.jetpack.swissandroid.ui.main.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +8,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.andrei.jetpack.swissandroid.R
-import com.andrei.jetpack.swissandroid.databinding.ListItemProductBinding
 import com.andrei.jetpack.swissandroid.databinding.ListItemProductLvlTwoBinding
 import com.andrei.jetpack.swissandroid.persistence.entities.ProductLvlTwo
 import com.andrei.jetpack.swissandroid.ui.main.viewmodels.ProductItemLvlTwoViewModel
+import timber.log.Timber
 
 
 class ProductsLvlTwoRVAdapter :
@@ -40,7 +39,7 @@ class ProductsLvlTwoRVAdapter :
 
         fun bind(product: ProductLvlTwo) {
             with(binding) {
-                Log.d(TAG, "bind Bind this item: $product")
+                Timber.d(TAG, "bind Bind this item: $product")
                 viewModel = ProductItemLvlTwoViewModel(product)
                 executePendingBindings()
             }

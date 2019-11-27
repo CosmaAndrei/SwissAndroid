@@ -10,12 +10,17 @@ import com.andrei.jetpack.swissandroid.R
 
 
 class SplashScreenFragment : Fragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View =
         inflater.inflate(R.layout.fragment_splash_screen, container, false)
 
     override fun onResume() {
         super.onResume()
-        findNavController().navigate(SplashScreenFragmentDirections.actionSplashScreenFragmentToMainViewPagerFragment()
+        findNavController().navigate(
+            SplashScreenFragmentDirections.actionSplashScreenFragmentToMainViewPagerFragment()
         )
     }
 }

@@ -24,6 +24,8 @@ Libraries Used
   * [Retrofit][15] for network requests
   * [Kotlin Coroutines][16] for managing background threads with simplified code and reducing needs for callbacks
   * [Dagger][17] for dependency injection
+  * [Timber][18] for logging
+
 
 
 [0]: https://developer.android.com/jetpack/components
@@ -41,4 +43,6 @@ Libraries Used
 [15]: https://square.github.io/retrofit/
 [16]: https://kotlinlang.org/docs/reference/coroutines-overview.html
 [17]: https://developer.android.com/training/dependency-injection/dagger-android
+[18]: https://github.com/JakeWharton/timber
+
 

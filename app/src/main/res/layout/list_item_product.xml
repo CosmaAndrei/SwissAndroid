@@ -3,9 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="clickListener"
-            type="android.view.View.OnClickListener"/>
+            type="android.view.View.OnClickListener" />
 
         <variable
             name="viewModel"
@@ -13,21 +14,23 @@
     </data>
 
 
-        <FrameLayout
-            android:layout_width="match_parent"
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{clickListener}">
+
+        <TextView
+            android:id="@+id/plant_name"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{clickListener}"
-            >
+            android:gravity="center_horizontal"
+            android:text="@{viewModel.name}"
+            android:padding="@dimen/normal_padding"
+            android:textScaleX="2"
+            android:scaleY="2"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
-                android:id="@+id/plant_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{viewModel.name}"
-                android:gravity="center_horizontal"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-        </FrameLayout>
+    </FrameLayout>
 </layout>

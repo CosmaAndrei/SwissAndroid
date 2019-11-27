@@ -51,7 +51,7 @@ class LevelOneFragment : DaggerFragment() {
                         // The date was deleted because it expired
                         // Trigger a fetch and update the database. This should
                         // automatically trigger a refresh after the data is saved.
-                        CoroutineScope(IO).launch{
+                        CoroutineScope(IO).launch {
                             lvlOneProductsViewModel.refreshData()
                         }
                     }

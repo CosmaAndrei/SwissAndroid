@@ -7,7 +7,7 @@ import retrofit2.http.Query
 
 interface GradeApi {
     @GET("getGrade.php")
-   suspend fun getGrade(
+    suspend fun getGrade(
         @Query("productId") productId: Int,
         @Query("clientCountLevel1") clientLvlOne: Int,
         @Query("clientCountLevel2") clientLvlTwo: Int

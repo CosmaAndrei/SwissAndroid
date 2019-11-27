@@ -1,6 +1,5 @@
 package com.andrei.jetpack.swissandroid.messages
 
-import com.andrei.jetpack.swissandroid.messages.ProductDTO
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 

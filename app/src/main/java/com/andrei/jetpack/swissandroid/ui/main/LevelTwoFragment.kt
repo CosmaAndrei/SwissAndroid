@@ -1,6 +1,5 @@
 package com.andrei.jetpack.swissandroid.ui.main
 
-import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,14 +10,9 @@ import androidx.lifecycle.observe
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import com.andrei.jetpack.swissandroid.databinding.FragmentLvlOneBinding
 import com.andrei.jetpack.swissandroid.databinding.FragmentLvlTwoBinding
 import com.andrei.jetpack.swissandroid.ui.main.adapters.ProductsLvlTwoRVAdapter
-import com.andrei.jetpack.swissandroid.ui.main.adapters.ProductsRVAdapter
-import com.andrei.jetpack.swissandroid.ui.main.viewmodels.LvlOneProductsViewModel
 import com.andrei.jetpack.swissandroid.ui.main.viewmodels.LvlTwoProductsViewModel
-import com.andrei.jetpack.swissandroid.util.APP_PREFERENCES
-import com.andrei.jetpack.swissandroid.util.LVL_ONE_REQ_EXPIRATION_TIME_KEY
 import com.andrei.jetpack.swissandroid.util.LVL_TWO_REQ_EXPIRATION_TIME_KEY
 import com.andrei.jetpack.swissandroid.util.UNIQUE_LVL_ONE_EXPIRED_PRODUCTS_WORKER
 import com.andrei.jetpack.swissandroid.viewmodel.ViewModelProviderFactory
@@ -31,7 +25,7 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class LevelTwoFragment:DaggerFragment() {
+class LevelTwoFragment : DaggerFragment() {
     companion object {
         val TAG = LevelTwoFragment::class.simpleName
     }
@@ -54,7 +48,7 @@ class LevelTwoFragment:DaggerFragment() {
                         // The date was deleted because it expired
                         // Trigger a fetch and update the database. This should
                         // automatically trigger a refresh after the data is saved.
-                        CoroutineScope(Dispatchers.IO).launch{
+                        CoroutineScope(Dispatchers.IO).launch {
                             lvlTwoProductsViewModel.refreshData()
                         }
                     }

@@ -10,7 +10,11 @@ import com.andrei.jetpack.swissandroid.persistence.entities.Grade
 import com.andrei.jetpack.swissandroid.persistence.entities.Product
 import com.andrei.jetpack.swissandroid.persistence.entities.ProductLvlTwo
 
-@Database(entities = [Product::class, Grade::class, ProductLvlTwo::class], version = 1, exportSchema = false)
+@Database(
+    entities = [Product::class, Grade::class, ProductLvlTwo::class],
+    version = 1,
+    exportSchema = false
+)
 @TypeConverters(Converter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun productDao(): ProductDao

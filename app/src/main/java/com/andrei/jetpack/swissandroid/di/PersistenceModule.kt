@@ -16,7 +16,11 @@ object PersistenceModule {
     @JvmStatic
     @Provides
     fun provideDatabase(application: Application): AppDatabase =
-        Room.databaseBuilder(application.applicationContext, AppDatabase::class.java, DATABASE_NAME).build()
+        Room.databaseBuilder(
+            application.applicationContext,
+            AppDatabase::class.java,
+            DATABASE_NAME
+        ).build()
 
     @JvmStatic
     @Provides
@@ -24,7 +28,8 @@ object PersistenceModule {
 
     @JvmStatic
     @Provides
-    fun provideProductLvlTwoDao(appDatabase: AppDatabase): ProductLvlTwoDao = appDatabase.productLvlTwoDao()
+    fun provideProductLvlTwoDao(appDatabase: AppDatabase): ProductLvlTwoDao =
+        appDatabase.productLvlTwoDao()
 
     @JvmStatic
     @Provides
