@@ -16,7 +16,11 @@ abstract class FragmentBuildersModule {
     )
     abstract fun contributeLevelOneFragment(): LevelOneFragment
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(
+        modules = [
+            LvlTwoProductsViewModelModule::class
+        ]
+    )
     abstract fun contributeLevelTwoFragment(): LevelTwoFragment
 
     @ContributesAndroidInjector

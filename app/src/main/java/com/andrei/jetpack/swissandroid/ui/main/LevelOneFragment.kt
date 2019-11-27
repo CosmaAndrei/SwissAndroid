@@ -67,8 +67,6 @@ class LevelOneFragment : DaggerFragment() {
         lvlOneProductsViewModel =
             ViewModelProviders.of(this, providerFactory).get(LvlOneProductsViewModel::class.java)
 
-        activity?.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
-
         binding = FragmentLvlOneBinding.inflate(inflater, container, false)
         val adapter = ProductsRVAdapter()
         binding.productList.adapter = adapter
