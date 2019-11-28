@@ -1,6 +1,5 @@
 package com.andrei.jetpack.swissandroid.ui.main
 
-import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,7 +13,6 @@ import androidx.work.WorkManager
 import com.andrei.jetpack.swissandroid.databinding.FragmentLvlOneBinding
 import com.andrei.jetpack.swissandroid.ui.main.adapters.ProductsRVAdapter
 import com.andrei.jetpack.swissandroid.ui.main.viewmodels.LvlOneProductsViewModel
-import com.andrei.jetpack.swissandroid.util.APP_PREFERENCES
 import com.andrei.jetpack.swissandroid.util.LVL_ONE_REQ_EXPIRATION_TIME_KEY
 import com.andrei.jetpack.swissandroid.util.UNIQUE_LVL_ONE_EXPIRED_PRODUCTS_WORKER
 import com.andrei.jetpack.swissandroid.viewmodel.ViewModelProviderFactory
@@ -22,6 +20,7 @@ import com.andrei.jetpack.swissandroid.workers.ExpiredLvlOneReqWorker
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -71,9 +70,11 @@ class LevelOneFragment : DaggerFragment() {
         val adapter = ProductsRVAdapter()
         binding.productList.adapter = adapter
 
+        subscribeUi(adapter, binding)
+
         startLvlOneWorker()
 
-        subscribeUi(adapter, binding)
+        setupSwipeRefresh()
 
         return binding.root
     }
@@ -106,5 +107,20 @@ class LevelOneFragment : DaggerFragment() {
                 PeriodicWorkRequestBuilder<ExpiredLvlOneReqWorker>(1, TimeUnit.MINUTES).build()
             )
         }
+    }
+
+    private fun setupSwipeRefresh() {
+        with(binding.swiperefresh) {
+            setOnRefreshListener {
+                CoroutineScope(IO).launch {
+                    refreshData()
+                    isRefreshing = false
+                }
+            }
+        }
+    }
+
+    private suspend fun refreshData() {
+        delay(1000)
     }
 }

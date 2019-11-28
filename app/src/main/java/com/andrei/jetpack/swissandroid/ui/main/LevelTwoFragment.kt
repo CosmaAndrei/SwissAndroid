@@ -20,6 +20,7 @@ import com.andrei.jetpack.swissandroid.workers.ExpiredLvlOneReqWorker
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -68,9 +69,11 @@ class LevelTwoFragment : DaggerFragment() {
         val adapter = ProductsLvlTwoRVAdapter()
         binding.productList.adapter = adapter
 
-        startLvlOneWorker()
-
         subscribeUi(adapter, binding)
+
+        setupSwipeRefresh()
+
+        startLvlOneWorker()
 
         return binding.root
     }
@@ -103,5 +106,20 @@ class LevelTwoFragment : DaggerFragment() {
                 PeriodicWorkRequestBuilder<ExpiredLvlOneReqWorker>(1, TimeUnit.MINUTES).build()
             )
         }
+    }
+
+    private fun setupSwipeRefresh() {
+        with(binding.swiperefresh) {
+            setOnRefreshListener {
+                CoroutineScope(Dispatchers.IO).launch {
+                    refreshData()
+                    isRefreshing = false
+                }
+            }
+        }
+    }
+
+    private suspend fun refreshData() {
+        delay(1000)
     }
 }
