@@ -32,7 +32,7 @@
             app:isGone="@{hasProducts}">
 
             <TextView
-                android:id="@+id/empty_garden"
+                android:id="@+id/empty_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/products_empty"
