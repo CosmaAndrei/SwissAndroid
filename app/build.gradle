@@ -44,11 +44,11 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
-
     /*Androidx*/
     implementation "androidx.appcompat:appcompat:${rootProject.androidxAppCompatVersion}"
     implementation "androidx.core:core-ktx:${rootProject.androidxCoreKtx}"
     implementation "androidx.constraintlayout:constraintlayout:${rootProject.androidxConstraintsLayoutVersion}"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:${rootProject.androidxSwipeToRefreshVersion}"
 
 
 
