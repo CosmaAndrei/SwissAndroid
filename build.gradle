@@ -46,6 +46,7 @@ ext {
     androidxNavigationKtx = "2.1.0"
     androidxViewPager2Version = "1.0.0"
     androidMaterailVersion = "1.2.0-alpha02"
+    androidxJunitVersion = "1.1.1"
     junitVersion = "4.12"
     daggerVersion = "2.25.2"
     retrofitVersion = "2.6.2"
