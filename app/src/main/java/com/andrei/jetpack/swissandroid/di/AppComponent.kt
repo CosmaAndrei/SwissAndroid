@@ -6,11 +6,13 @@ import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
+import javax.inject.Singleton
 
 /*
 * In this class we need to add all the @Module classes we build.
 *
 * The app component owns the singleton scope.*/
+@Singleton
 @Component(
     modules = [
         AndroidSupportInjectionModule::class,

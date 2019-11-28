@@ -1,36 +1,28 @@
 package com.andrei.jetpack.swissandroid.di
 
-import android.app.Application
-import androidx.room.Room
 import com.andrei.jetpack.swissandroid.persistence.AppDatabase
 import com.andrei.jetpack.swissandroid.persistence.dao.GradeDao
 import com.andrei.jetpack.swissandroid.persistence.dao.ProductDao
 import com.andrei.jetpack.swissandroid.persistence.dao.ProductLvlTwoDao
-import com.andrei.jetpack.swissandroid.util.DATABASE_NAME
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 @Module
 object PersistenceModule {
 
-    @JvmStatic
-    @Provides
-    fun provideDatabase(application: Application): AppDatabase =
-        Room.databaseBuilder(
-            application.applicationContext,
-            AppDatabase::class.java,
-            DATABASE_NAME
-        ).build()
-
+    @Singleton
     @JvmStatic
     @Provides
     fun provideProductsDao(appDatabase: AppDatabase): ProductDao = appDatabase.productDao()
 
+    @Singleton
     @JvmStatic
     @Provides
     fun provideProductLvlTwoDao(appDatabase: AppDatabase): ProductLvlTwoDao =
         appDatabase.productLvlTwoDao()
 
+    @Singleton
     @JvmStatic
     @Provides
     fun provideGradeDao(appDatabase: AppDatabase): GradeDao = appDatabase.gradeDao()
