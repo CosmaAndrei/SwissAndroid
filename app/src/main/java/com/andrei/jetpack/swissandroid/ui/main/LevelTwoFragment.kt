@@ -15,8 +15,10 @@ import com.andrei.jetpack.swissandroid.ui.main.adapters.ProductsLvlTwoRVAdapter
 import com.andrei.jetpack.swissandroid.ui.main.viewmodels.LvlTwoProductsViewModel
 import com.andrei.jetpack.swissandroid.util.LVL_TWO_REQ_EXPIRATION_TIME_KEY
 import com.andrei.jetpack.swissandroid.util.UNIQUE_LVL_ONE_EXPIRED_PRODUCTS_WORKER
+import com.andrei.jetpack.swissandroid.util.UNIQUE_LVL_TWO_EXPIRED_PRODUCTS_WORKER
 import com.andrei.jetpack.swissandroid.viewmodel.ViewModelProviderFactory
 import com.andrei.jetpack.swissandroid.workers.ExpiredLvlOneReqWorker
+import com.andrei.jetpack.swissandroid.workers.ExpiredLvlTwoReqWorker
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -73,7 +75,7 @@ class LevelTwoFragment : DaggerFragment() {
 
         setupSwipeRefresh()
 
-        startLvlOneWorker()
+        startLvlTwoWorker()
 
         return binding.root
     }
@@ -97,13 +99,13 @@ class LevelTwoFragment : DaggerFragment() {
         }
     }
 
-    // This worker checks if the lvl one products are expired
-    private fun startLvlOneWorker() {
+    // This worker checks if the lvl two products are expired
+    private fun startLvlTwoWorker() {
         context?.let {
             WorkManager.getInstance(it).enqueueUniquePeriodicWork(
-                UNIQUE_LVL_ONE_EXPIRED_PRODUCTS_WORKER,
+                UNIQUE_LVL_TWO_EXPIRED_PRODUCTS_WORKER,
                 ExistingPeriodicWorkPolicy.KEEP,
-                PeriodicWorkRequestBuilder<ExpiredLvlOneReqWorker>(1, TimeUnit.MINUTES).build()
+                PeriodicWorkRequestBuilder<ExpiredLvlTwoReqWorker>(1, TimeUnit.MINUTES).build()
             )
         }
     }

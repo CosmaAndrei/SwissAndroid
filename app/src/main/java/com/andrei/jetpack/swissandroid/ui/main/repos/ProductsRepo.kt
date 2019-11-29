@@ -21,7 +21,6 @@ class ProductsRepo @Inject constructor(
     private val productDao: ProductDao,
     private val prefs: SharedPreferences
 ) {
-    val name = "Level one repo working!! GOOD JOB!"
 
     fun getLvlOneProducts(): LiveData<Resource<List<Product>>> = object :
         NetworkBoundResource<List<Product>, List<Product>>() {

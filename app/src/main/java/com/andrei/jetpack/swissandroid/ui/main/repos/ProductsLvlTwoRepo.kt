@@ -22,7 +22,6 @@ class ProductsLvlTwoRepo @Inject constructor(
     private val productDao: ProductLvlTwoDao,
     private val prefs: SharedPreferences
 ) {
-    val name = "Level one repo working!! GOOD JOB!"
 
     fun getLvlTwoProducts(): LiveData<Resource<List<ProductLvlTwo>>> = object :
         NetworkBoundResource<List<ProductLvlTwo>, List<ProductLvlTwo>>() {
@@ -77,7 +76,7 @@ class ProductsLvlTwoRepo @Inject constructor(
             if (response.isSuccessful) {
                 // Save the date when the request was made.
                 prefs.edit().putString(
-                    LVL_ONE_REQ_EXPIRATION_TIME_KEY,
+                    LVL_TWO_REQ_EXPIRATION_TIME_KEY,
                     Date().apply { this.time = this.time + 60000 * 5 }.toString()
                 )
 

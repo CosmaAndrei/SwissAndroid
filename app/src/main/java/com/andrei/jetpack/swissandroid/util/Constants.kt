@@ -10,3 +10,4 @@ const val LVL_TWO_REQ_EXPIRATION_TIME_KEY = "lvlTwoReqExpirationTimeKey"
 const val GRADES_REQ_EXPIRATION_TIME_KEY = "gradesReqExpirationTimeKey"
 
 const val UNIQUE_LVL_ONE_EXPIRED_PRODUCTS_WORKER = "lvlOneExpiredProductsWorker"
+const val UNIQUE_LVL_TWO_EXPIRED_PRODUCTS_WORKER = "lvlTwoExpiredProductsWorker"
