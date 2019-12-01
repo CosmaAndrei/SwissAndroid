@@ -1,6 +1,7 @@
 package com.andrei.jetpack.swissandroid.resource
 
 import androidx.annotation.MainThread
+import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import kotlinx.coroutines.CoroutineScope
@@ -14,7 +15,6 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
 
     init {
         result.value = Resource.loading(null)
-        @Suppress("LeakingThis")
         val dbSource = loadFromDb()
         result.addSource(dbSource) { data ->
             result.removeSource(dbSource)
@@ -82,6 +82,7 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
 
     protected open fun processResponse(response: ApiSuccessResponse<RequestType>) = response.body
 
+    @WorkerThread
     protected abstract suspend fun saveCallResult(item: RequestType)
 
     protected abstract fun shouldFetch(data: ResultType?): Boolean

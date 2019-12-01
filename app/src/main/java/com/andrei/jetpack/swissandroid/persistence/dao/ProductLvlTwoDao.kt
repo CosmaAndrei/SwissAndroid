@@ -18,6 +18,9 @@ interface ProductLvlTwoDao {
     suspend fun save(product: List<ProductLvlTwo>)
 
     @Query("SELECT * FROM product_lvl_two_table")
-    fun getAll(): LiveData<List<ProductLvlTwo>>
+    fun getAllAsLiveData(): LiveData<List<ProductLvlTwo>>
+
+    @Query("SELECT * FROM product_lvl_two_table")
+    fun getAll(): List<ProductLvlTwo>
 
 }

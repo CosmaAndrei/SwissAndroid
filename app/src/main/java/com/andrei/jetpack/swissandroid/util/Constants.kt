@@ -11,3 +11,4 @@ const val GRADES_REQ_EXPIRATION_TIME_KEY = "gradesReqExpirationTimeKey"
 
 const val UNIQUE_LVL_ONE_EXPIRED_PRODUCTS_WORKER = "lvlOneExpiredProductsWorker"
 const val UNIQUE_LVL_TWO_EXPIRED_PRODUCTS_WORKER = "lvlTwoExpiredProductsWorker"
+const val UNIQUE_EXPIRED_GRADES_WORKER = "ExpiredGradesWorker"

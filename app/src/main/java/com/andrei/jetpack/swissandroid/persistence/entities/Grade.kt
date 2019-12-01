@@ -10,6 +10,8 @@ data class Grade(
     @PrimaryKey
     @ColumnInfo(name = "product_id")
     val productId: String,
+    @ColumnInfo(name = "item_name")
+    val itemName: String,
     @ColumnInfo(name = "client_count_level_one")
     val clientCountLevelOne: String,
     @ColumnInfo(name = "client_count_level_two")

@@ -14,6 +14,14 @@ interface GradeDao {
     @Insert(onConflict = REPLACE)
     suspend fun save(user: Grade)
 
+
+    @Insert(onConflict = REPLACE)
+    suspend fun save(user: List<Grade>)
+
     @Query("SELECT * FROM grade_table")
-    fun getAll(): LiveData<List<Grade>>
+    fun getAllAsLiveData(): LiveData<List<Grade>>
+
+
+    @Query("SELECT * FROM grade_table")
+    suspend fun getAll(): List<Grade>
 }

@@ -5,7 +5,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.andrei.jetpack.swissandroid.util.LVL_TWO_REQ_EXPIRATION_TIME_KEY
 import com.andrei.jetpack.swissandroid.util.APP_PREFERENCES
-import java.util.*
+import com.andrei.jetpack.swissandroid.util.setNetworkBoundResourceCacheToExpired
 
 class ExpiredLvlTwoReqWorker(
     ctx: Context,
@@ -13,19 +13,11 @@ class ExpiredLvlTwoReqWorker(
 ) : CoroutineWorker(ctx, params) {
     override suspend fun doWork(): Result {
         return try {
-            val preferences =
-                applicationContext.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
-            if (preferences.contains(LVL_TWO_REQ_EXPIRATION_TIME_KEY)) {
-                val expDate = preferences.getString(LVL_TWO_REQ_EXPIRATION_TIME_KEY, "")
-                if (!expDate.equals("")) {
-                    if (Date(expDate).before(Date())) {
-                        with(preferences.edit()) {
-                            putString(LVL_TWO_REQ_EXPIRATION_TIME_KEY, "")
-                            commit()
-                        }
-                    }
-                }
-            }
+            applicationContext.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
+                .setNetworkBoundResourceCacheToExpired(
+                    LVL_TWO_REQ_EXPIRATION_TIME_KEY
+                )
+
             Result.success()
         } catch (e: Exception) {
             // Log error with Timber

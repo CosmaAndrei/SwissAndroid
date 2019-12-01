@@ -16,6 +16,7 @@ import com.andrei.jetpack.swissandroid.ui.main.viewmodels.LvlTwoProductsViewMode
 import com.andrei.jetpack.swissandroid.util.LVL_TWO_REQ_EXPIRATION_TIME_KEY
 import com.andrei.jetpack.swissandroid.util.UNIQUE_LVL_ONE_EXPIRED_PRODUCTS_WORKER
 import com.andrei.jetpack.swissandroid.util.UNIQUE_LVL_TWO_EXPIRED_PRODUCTS_WORKER
+import com.andrei.jetpack.swissandroid.util.isNetworkBoundResourceCacheExpired
 import com.andrei.jetpack.swissandroid.viewmodel.ViewModelProviderFactory
 import com.andrei.jetpack.swissandroid.workers.ExpiredLvlOneReqWorker
 import com.andrei.jetpack.swissandroid.workers.ExpiredLvlTwoReqWorker
@@ -47,7 +48,7 @@ class LevelTwoFragment : DaggerFragment() {
         SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
             when (key) {
                 LVL_TWO_REQ_EXPIRATION_TIME_KEY -> {
-                    if (prefs.getString(LVL_TWO_REQ_EXPIRATION_TIME_KEY, "").equals("")) {
+                    if (prefs.isNetworkBoundResourceCacheExpired(key)) {
                         // The date was deleted because it expired
                         // Trigger a fetch and update the database. This should
                         // automatically trigger a refresh after the data is saved.
@@ -114,14 +115,10 @@ class LevelTwoFragment : DaggerFragment() {
         with(binding.swiperefresh) {
             setOnRefreshListener {
                 CoroutineScope(Dispatchers.IO).launch {
-                    refreshData()
+                    lvlTwoProductsViewModel.refreshData()
                     isRefreshing = false
                 }
             }
         }
-    }
-
-    private suspend fun refreshData() {
-        delay(1000)
     }
 }

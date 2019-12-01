@@ -1,5 +1,6 @@
 package com.andrei.jetpack.swissandroid.di
 
+import com.andrei.jetpack.swissandroid.di.main.*
 import com.andrei.jetpack.swissandroid.ui.detailone.LvlOneDetailFragment
 import com.andrei.jetpack.swissandroid.ui.main.GradesFragment
 import com.andrei.jetpack.swissandroid.ui.main.LevelOneFragment
@@ -10,21 +11,38 @@ import dagger.android.ContributesAndroidInjector
 
 @Module
 abstract class FragmentBuildersModule {
+
+    @MainScope
     @ContributesAndroidInjector(
         modules = [
-            LvlOneProductsViewModelModule::class
+            LvlOneProductsViewModelModule::class,
+            ProductLvlOnePersistenceModule::class,
+            ProductApiModule::class
         ]
     )
     abstract fun contributeLevelOneFragment(): LevelOneFragment
 
+    @MainScope
     @ContributesAndroidInjector(
         modules = [
-            LvlTwoProductsViewModelModule::class
+            LvlTwoProductsViewModelModule::class,
+            ProductLvlTwoPersistenceModule::class,
+            ProductApiModule::class
         ]
     )
     abstract fun contributeLevelTwoFragment(): LevelTwoFragment
 
-    @ContributesAndroidInjector
+    @MainScope
+    @ContributesAndroidInjector(
+        modules = [
+            GradesViewModelModule::class,
+            GradeApiModule::class,
+            GradePersistenceModule::class,
+            ProductLvlOnePersistenceModule::class,
+            ProductLvlTwoPersistenceModule::class,
+            ProductApiModule::class
+        ]
+    )
     abstract fun contributeGradesFragment(): GradesFragment
 
     @ContributesAndroidInjector

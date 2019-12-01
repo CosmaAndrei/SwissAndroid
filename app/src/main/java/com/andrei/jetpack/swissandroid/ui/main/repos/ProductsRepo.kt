@@ -7,6 +7,8 @@ import com.andrei.jetpack.swissandroid.persistence.dao.ProductDao
 import com.andrei.jetpack.swissandroid.persistence.entities.Product
 import com.andrei.jetpack.swissandroid.resource.*
 import com.andrei.jetpack.swissandroid.util.LVL_ONE_REQ_EXPIRATION_TIME_KEY
+import com.andrei.jetpack.swissandroid.util.isNetworkBoundResourceCacheExpired
+import com.andrei.jetpack.swissandroid.util.setNetworkBoundResourceCacheToValid
 import com.andrei.jetpack.swissandroid.util.toPersistable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
@@ -22,22 +24,17 @@ class ProductsRepo @Inject constructor(
     private val prefs: SharedPreferences
 ) {
 
-    fun getLvlOneProducts(): LiveData<Resource<List<Product>>> = object :
+    fun getLvlOneProductsAsLiveData(): LiveData<Resource<List<Product>>> = object :
         NetworkBoundResource<List<Product>, List<Product>>() {
         override suspend fun saveCallResult(item: List<Product>) {
             productDao.save(item)
         }
 
-        override fun shouldFetch(data: List<Product>?): Boolean {
-            val dateString = prefs.getString(LVL_ONE_REQ_EXPIRATION_TIME_KEY, "")
-            if (!dateString.equals("")) {
-                return Date(dateString).before(Date())
-            }
-            return true
-        }
+        override fun shouldFetch(data: List<Product>?): Boolean =
+            prefs.isNetworkBoundResourceCacheExpired(LVL_ONE_REQ_EXPIRATION_TIME_KEY)
 
         override fun loadFromDb(): LiveData<List<Product>> {
-            return productDao.getAll()
+            return productDao.getAllAsLiveData()
         }
 
         override fun createCall(): LiveData<ApiResponse<List<Product>>> {
@@ -74,11 +71,7 @@ class ProductsRepo @Inject constructor(
 
             if (response.isSuccessful) {
                 // Save the date when the request was made.
-                prefs.edit().putString(
-                    LVL_ONE_REQ_EXPIRATION_TIME_KEY,
-                    Date().apply { this.time = this.time + 60000 * 5 }.toString()
-                )
-
+                prefs.setNetworkBoundResourceCacheToValid(LVL_ONE_REQ_EXPIRATION_TIME_KEY)
                 // Return the response
                 ApiSuccessResponse(response.body()!!.products.toPersistable(), "")
             } else {
@@ -90,4 +83,6 @@ class ProductsRepo @Inject constructor(
             ApiErrorResponse("Something went wrong. $e")
         }
     }
+
+    suspend fun getCachedProducts(): List<Product> = productDao.getAll()
 }

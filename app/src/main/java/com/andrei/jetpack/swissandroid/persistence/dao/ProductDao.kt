@@ -17,6 +17,10 @@ interface ProductDao {
     suspend fun save(product: List<Product>)
 
     @Query("SELECT * FROM product_table")
-    fun getAll(): LiveData<List<Product>>
+    fun getAllAsLiveData(): LiveData<List<Product>>
+
+
+    @Query("SELECT * FROM product_table")
+    suspend fun getAll(): List<Product>
 
 }

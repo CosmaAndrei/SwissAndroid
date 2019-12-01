@@ -6,8 +6,9 @@ import com.andrei.jetpack.swissandroid.network.ProductApi
 import com.andrei.jetpack.swissandroid.persistence.dao.ProductLvlTwoDao
 import com.andrei.jetpack.swissandroid.persistence.entities.ProductLvlTwo
 import com.andrei.jetpack.swissandroid.resource.*
-import com.andrei.jetpack.swissandroid.util.LVL_ONE_REQ_EXPIRATION_TIME_KEY
 import com.andrei.jetpack.swissandroid.util.LVL_TWO_REQ_EXPIRATION_TIME_KEY
+import com.andrei.jetpack.swissandroid.util.isNetworkBoundResourceCacheExpired
+import com.andrei.jetpack.swissandroid.util.setNetworkBoundResourceCacheToValid
 import com.andrei.jetpack.swissandroid.util.toPersistableLvlTwo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
@@ -23,26 +24,20 @@ class ProductsLvlTwoRepo @Inject constructor(
     private val prefs: SharedPreferences
 ) {
 
-    fun getLvlTwoProducts(): LiveData<Resource<List<ProductLvlTwo>>> = object :
+    fun getLvlTwoProductsAsLiveData(): LiveData<Resource<List<ProductLvlTwo>>> = object :
         NetworkBoundResource<List<ProductLvlTwo>, List<ProductLvlTwo>>() {
         override suspend fun saveCallResult(item: List<ProductLvlTwo>) {
             productDao.save(item)
         }
 
-        override fun shouldFetch(data: List<ProductLvlTwo>?): Boolean {
-            val dateString = prefs.getString(LVL_TWO_REQ_EXPIRATION_TIME_KEY, "")
-            if (!dateString.equals("")) {
-                return Date(dateString).before(Date())
-            }
-            return true
-        }
+        override fun shouldFetch(data: List<ProductLvlTwo>?): Boolean =
+            prefs.isNetworkBoundResourceCacheExpired(LVL_TWO_REQ_EXPIRATION_TIME_KEY)
 
-        override fun loadFromDb(): LiveData<List<ProductLvlTwo>> {
-            return productDao.getAll()
-        }
+        override fun loadFromDb(): LiveData<List<ProductLvlTwo>> =
+            productDao.getAllAsLiveData()
 
-        override fun createCall(): LiveData<ApiResponse<List<ProductLvlTwo>>> {
-            return object : LiveData<ApiResponse<List<ProductLvlTwo>>>() {
+        override fun createCall(): LiveData<ApiResponse<List<ProductLvlTwo>>> =
+            object : LiveData<ApiResponse<List<ProductLvlTwo>>>() {
                 override fun onActive() {
                     super.onActive()
                     CoroutineScope(IO).launch {
@@ -54,12 +49,10 @@ class ProductsLvlTwoRepo @Inject constructor(
                     }
                 }
             }
-        }
     }.asLiveData()
 
     suspend fun refreshData() {
         withContext(IO) {
-
             when (val result = fetchData()) {
                 is ApiSuccessResponse -> {
                     productDao.save(result.body)
@@ -69,17 +62,13 @@ class ProductsLvlTwoRepo @Inject constructor(
         }
     }
 
-    private suspend fun fetchData(): ApiResponse<List<ProductLvlTwo>> {
-        return try {
+    private suspend fun fetchData(): ApiResponse<List<ProductLvlTwo>> =
+        try {
             val response = productApi.getLvlTwoProducts()
 
             if (response.isSuccessful) {
                 // Save the date when the request was made.
-                prefs.edit().putString(
-                    LVL_TWO_REQ_EXPIRATION_TIME_KEY,
-                    Date().apply { this.time = this.time + 60000 * 5 }.toString()
-                )
-
+                prefs.setNetworkBoundResourceCacheToValid(LVL_TWO_REQ_EXPIRATION_TIME_KEY)
                 // Return the response
                 ApiSuccessResponse(response.body()!!.products.toPersistableLvlTwo(), "")
             } else {
@@ -90,5 +79,7 @@ class ProductsLvlTwoRepo @Inject constructor(
             //Handle error
             ApiErrorResponse("Something went wrong. $e")
         }
-    }
+
+    suspend fun getCachedProducts(): List<ProductLvlTwo> =
+        productDao.getAll()
 }

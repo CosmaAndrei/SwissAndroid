@@ -1,4 +1,4 @@
-package com.andrei.jetpack.swissandroid.di
+package com.andrei.jetpack.swissandroid.di.main
 
 import androidx.lifecycle.ViewModel
 import com.andrei.jetpack.swissandroid.ui.main.viewmodels.LvlOneProductsViewModel
@@ -12,6 +12,8 @@ import dagger.multibindings.IntoMap
 * This is responsible of injecting the lvl one view model*/
 @Module
 abstract class LvlTwoProductsViewModelModule {
+
+    @MainScope
     @Binds
     @IntoMap
     @ViewModelKey(LvlTwoProductsViewModel::class) // PROVIDE YOUR OWN MODELS HERE

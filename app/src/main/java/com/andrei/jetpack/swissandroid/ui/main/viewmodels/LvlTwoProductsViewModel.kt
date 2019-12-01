@@ -14,5 +14,5 @@ class LvlTwoProductsViewModel @Inject constructor(
         repo.refreshData()
     }
 
-    val products: LiveData<Resource<List<ProductLvlTwo>>> = repo.getLvlTwoProducts()
+    val products: LiveData<Resource<List<ProductLvlTwo>>> = repo.getLvlTwoProductsAsLiveData()
 }

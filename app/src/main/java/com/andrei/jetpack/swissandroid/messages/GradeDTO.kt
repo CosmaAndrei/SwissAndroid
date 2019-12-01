@@ -15,5 +15,5 @@ data class GradeDTO(
     val clientCountLevel2: String,
     @SerializedName("grade")
     @Expose
-    val grade: Int
+    val grade: Double
 )
