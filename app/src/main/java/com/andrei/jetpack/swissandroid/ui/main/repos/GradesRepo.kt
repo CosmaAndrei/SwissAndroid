@@ -44,7 +44,7 @@ class GradesRepo @Inject constructor(
                 override fun onActive() {
                     super.onActive()
                     CoroutineScope(IO).launch {
-                        val result: ApiResponse<List<Grade>> = fetchData()
+                        val result: ApiResponse<List<Grade>> = fetchData(false)
 
                         withContext(Main) {
                             value = result
@@ -57,7 +57,7 @@ class GradesRepo @Inject constructor(
 
     suspend fun refreshData() {
         Timber.d("GFD Refresh data.")
-        when (val result = fetchData()) {
+        when (val result = fetchData(true)) {
             is ApiSuccessResponse -> {
                 gradeDao.deleteAll()
                 gradeDao.save(result.body)
@@ -65,13 +65,13 @@ class GradesRepo @Inject constructor(
         }
     }
 
-    private suspend fun fetchData(): ApiResponse<List<Grade>> {
-        if (prefs.isNetworkBoundResourceCacheExpired(LVL_ONE_REQ_EXPIRATION_TIME_KEY)) {
+    private suspend fun fetchData(isRefresh: Boolean): ApiResponse<List<Grade>> {
+        if (isRefresh || prefs.isNetworkBoundResourceCacheExpired(LVL_ONE_REQ_EXPIRATION_TIME_KEY)) {
             Timber.d("GFD Refresh lvl one.")
             lvlOneRepo.refreshData()
         }
 
-        if (prefs.isNetworkBoundResourceCacheExpired(LVL_TWO_REQ_EXPIRATION_TIME_KEY)) {
+        if (isRefresh || prefs.isNetworkBoundResourceCacheExpired(LVL_TWO_REQ_EXPIRATION_TIME_KEY)) {
             Timber.d("GFD Refresh lvl two.")
             lvlTwoRepo.refreshData()
         }

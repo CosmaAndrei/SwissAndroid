@@ -12,6 +12,7 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.andrei.jetpack.swissandroid.databinding.FragmentLvlOneBinding
 import com.andrei.jetpack.swissandroid.ui.main.adapters.ProductsRVAdapter
+import com.andrei.jetpack.swissandroid.ui.main.listeners.IMainViewPagerFragmentListener
 import com.andrei.jetpack.swissandroid.ui.main.viewmodels.LvlOneProductsViewModel
 import com.andrei.jetpack.swissandroid.util.LVL_ONE_REQ_EXPIRATION_TIME_KEY
 import com.andrei.jetpack.swissandroid.util.UNIQUE_LVL_ONE_EXPIRED_PRODUCTS_WORKER
@@ -21,14 +22,13 @@ import com.andrei.jetpack.swissandroid.workers.ExpiredLvlOneReqWorker
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
-class LevelOneFragment : DaggerFragment() {
+class LevelOneFragment(val listener: IMainViewPagerFragmentListener) : DaggerFragment() {
     companion object {
         val TAG = LevelOneFragment::class.simpleName
     }
@@ -43,7 +43,7 @@ class LevelOneFragment : DaggerFragment() {
     @Inject
     lateinit var sharedPrefs: SharedPreferences
 
-    private val listener: SharedPreferences.OnSharedPreferenceChangeListener =
+    private val spListener: SharedPreferences.OnSharedPreferenceChangeListener =
         SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
             when (key) {
                 LVL_ONE_REQ_EXPIRATION_TIME_KEY -> {
@@ -82,12 +82,12 @@ class LevelOneFragment : DaggerFragment() {
 
     override fun onResume() {
         super.onResume()
-        sharedPrefs.registerOnSharedPreferenceChangeListener(listener)
+        sharedPrefs.registerOnSharedPreferenceChangeListener(spListener)
     }
 
     override fun onPause() {
         super.onPause()
-        sharedPrefs.unregisterOnSharedPreferenceChangeListener(listener)
+        sharedPrefs.unregisterOnSharedPreferenceChangeListener(spListener)
     }
 
     // In this method we check the status and respond in consequence.
@@ -114,7 +114,7 @@ class LevelOneFragment : DaggerFragment() {
         with(binding.swiperefresh) {
             setOnRefreshListener {
                 CoroutineScope(IO).launch {
-                    lvlOneProductsViewModel.refreshData()
+                    listener.refreshAllData()
                     isRefreshing = false
                 }
             }

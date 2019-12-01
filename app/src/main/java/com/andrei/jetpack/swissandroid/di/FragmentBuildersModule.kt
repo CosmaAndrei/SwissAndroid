@@ -45,7 +45,17 @@ abstract class FragmentBuildersModule {
     )
     abstract fun contributeGradesFragment(): GradesFragment
 
-    @ContributesAndroidInjector
+    @MainScope
+    @ContributesAndroidInjector(
+        modules = [
+            MainViewPagerViewModule::class,
+            GradeApiModule::class,
+            GradePersistenceModule::class,
+            ProductLvlOnePersistenceModule::class,
+            ProductLvlTwoPersistenceModule::class,
+            ProductApiModule::class
+        ]
+    )
     abstract fun contributeMainViewPagerFragment(): MainViewPagerFragment
 
     @ContributesAndroidInjector

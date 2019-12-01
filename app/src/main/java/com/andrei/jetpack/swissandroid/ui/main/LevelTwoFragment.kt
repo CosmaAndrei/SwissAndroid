@@ -12,24 +12,22 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.andrei.jetpack.swissandroid.databinding.FragmentLvlTwoBinding
 import com.andrei.jetpack.swissandroid.ui.main.adapters.ProductsLvlTwoRVAdapter
+import com.andrei.jetpack.swissandroid.ui.main.listeners.IMainViewPagerFragmentListener
 import com.andrei.jetpack.swissandroid.ui.main.viewmodels.LvlTwoProductsViewModel
 import com.andrei.jetpack.swissandroid.util.LVL_TWO_REQ_EXPIRATION_TIME_KEY
-import com.andrei.jetpack.swissandroid.util.UNIQUE_LVL_ONE_EXPIRED_PRODUCTS_WORKER
 import com.andrei.jetpack.swissandroid.util.UNIQUE_LVL_TWO_EXPIRED_PRODUCTS_WORKER
 import com.andrei.jetpack.swissandroid.util.isNetworkBoundResourceCacheExpired
 import com.andrei.jetpack.swissandroid.viewmodel.ViewModelProviderFactory
-import com.andrei.jetpack.swissandroid.workers.ExpiredLvlOneReqWorker
 import com.andrei.jetpack.swissandroid.workers.ExpiredLvlTwoReqWorker
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class LevelTwoFragment : DaggerFragment() {
+class LevelTwoFragment(val listener: IMainViewPagerFragmentListener) : DaggerFragment() {
     companion object {
         val TAG = LevelTwoFragment::class.simpleName
     }
@@ -44,7 +42,7 @@ class LevelTwoFragment : DaggerFragment() {
     @Inject
     lateinit var sharedPrefs: SharedPreferences
 
-    private val listener: SharedPreferences.OnSharedPreferenceChangeListener =
+    private val spListener: SharedPreferences.OnSharedPreferenceChangeListener =
         SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
             when (key) {
                 LVL_TWO_REQ_EXPIRATION_TIME_KEY -> {
@@ -83,12 +81,12 @@ class LevelTwoFragment : DaggerFragment() {
 
     override fun onResume() {
         super.onResume()
-        sharedPrefs.registerOnSharedPreferenceChangeListener(listener)
+        sharedPrefs.registerOnSharedPreferenceChangeListener(spListener)
     }
 
     override fun onPause() {
         super.onPause()
-        sharedPrefs.unregisterOnSharedPreferenceChangeListener(listener)
+        sharedPrefs.unregisterOnSharedPreferenceChangeListener(spListener)
     }
 
     // In this method we check the status and respond in consequence.
@@ -115,7 +113,7 @@ class LevelTwoFragment : DaggerFragment() {
         with(binding.swiperefresh) {
             setOnRefreshListener {
                 CoroutineScope(Dispatchers.IO).launch {
-                    lvlTwoProductsViewModel.refreshData()
+                    listener.refreshAllData()
                     isRefreshing = false
                 }
             }

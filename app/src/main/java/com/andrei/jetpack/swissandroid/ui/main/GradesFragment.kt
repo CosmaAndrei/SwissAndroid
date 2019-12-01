@@ -2,18 +2,17 @@ package com.andrei.jetpack.swissandroid.ui.main
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
 import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.Logger
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.andrei.jetpack.swissandroid.databinding.FragmentGradesBinding
 import com.andrei.jetpack.swissandroid.ui.main.adapters.GradeRVAdapter
+import com.andrei.jetpack.swissandroid.ui.main.listeners.IMainViewPagerFragmentListener
 import com.andrei.jetpack.swissandroid.ui.main.viewmodels.GradesViewModel
 import com.andrei.jetpack.swissandroid.util.GRADES_REQ_EXPIRATION_TIME_KEY
 import com.andrei.jetpack.swissandroid.util.UNIQUE_EXPIRED_GRADES_WORKER
@@ -28,7 +27,7 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class GradesFragment : DaggerFragment() {
+class GradesFragment(val listener: IMainViewPagerFragmentListener) : DaggerFragment() {
 
     private lateinit var binding: FragmentGradesBinding
 
@@ -40,7 +39,7 @@ class GradesFragment : DaggerFragment() {
     @Inject
     lateinit var sharedPrefs: SharedPreferences
 
-    private val listener: SharedPreferences.OnSharedPreferenceChangeListener =
+    private val spListener: SharedPreferences.OnSharedPreferenceChangeListener =
         SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
             when (key) {
                 GRADES_REQ_EXPIRATION_TIME_KEY -> {
@@ -81,12 +80,12 @@ class GradesFragment : DaggerFragment() {
 
     override fun onResume() {
         super.onResume()
-        sharedPrefs.registerOnSharedPreferenceChangeListener(listener)
+        sharedPrefs.registerOnSharedPreferenceChangeListener(spListener)
     }
 
     override fun onPause() {
         super.onPause()
-        sharedPrefs.unregisterOnSharedPreferenceChangeListener(listener)
+        sharedPrefs.unregisterOnSharedPreferenceChangeListener(spListener)
     }
 
     // In this method we check the status and respond in consequence.
@@ -114,7 +113,7 @@ class GradesFragment : DaggerFragment() {
             setOnRefreshListener {
                 CoroutineScope(IO).launch {
                     Timber.d("GFD Refresh data.")
-                    gradesViewModel.refreshData()
+                    listener.refreshAllData()
                     isRefreshing = false
                 }
             }
