@@ -28,7 +28,7 @@ class GradesRepo @Inject constructor(
         NetworkBoundResource<List<Grade>, List<Grade>>() {
         override suspend fun saveCallResult(item: List<Grade>) {
             Timber.d("GFD Saving grades: ${item}.")
-
+            gradeDao.deleteAll()
             gradeDao.save(item)
         }
 
@@ -59,6 +59,7 @@ class GradesRepo @Inject constructor(
         Timber.d("GFD Refresh data.")
         when (val result = fetchData()) {
             is ApiSuccessResponse -> {
+                gradeDao.deleteAll()
                 gradeDao.save(result.body)
             }
         }

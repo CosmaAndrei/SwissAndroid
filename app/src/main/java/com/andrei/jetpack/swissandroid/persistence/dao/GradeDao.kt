@@ -9,11 +9,8 @@ import com.andrei.jetpack.swissandroid.persistence.entities.Grade
 
 @Dao
 interface GradeDao {
-
-
     @Insert(onConflict = REPLACE)
     suspend fun save(user: Grade)
-
 
     @Insert(onConflict = REPLACE)
     suspend fun save(user: List<Grade>)
@@ -21,7 +18,9 @@ interface GradeDao {
     @Query("SELECT * FROM grade_table")
     fun getAllAsLiveData(): LiveData<List<Grade>>
 
-
     @Query("SELECT * FROM grade_table")
     suspend fun getAll(): List<Grade>
+
+    @Query("DELETE FROM grade_table")
+    suspend fun deleteAll()
 }

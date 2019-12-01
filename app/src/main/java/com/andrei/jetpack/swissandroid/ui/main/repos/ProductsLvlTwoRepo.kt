@@ -27,6 +27,7 @@ class ProductsLvlTwoRepo @Inject constructor(
     fun getLvlTwoProductsAsLiveData(): LiveData<Resource<List<ProductLvlTwo>>> = object :
         NetworkBoundResource<List<ProductLvlTwo>, List<ProductLvlTwo>>() {
         override suspend fun saveCallResult(item: List<ProductLvlTwo>) {
+            productDao.deleteAll()
             productDao.save(item)
         }
 
@@ -55,10 +56,10 @@ class ProductsLvlTwoRepo @Inject constructor(
         withContext(IO) {
             when (val result = fetchData()) {
                 is ApiSuccessResponse -> {
+                    productDao.deleteAll()
                     productDao.save(result.body)
                 }
             }
-
         }
     }
 

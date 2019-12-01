@@ -12,15 +12,15 @@ interface ProductDao {
     @Insert(onConflict = REPLACE)
     suspend fun save(product: Product)
 
-
     @Insert(onConflict = REPLACE)
     suspend fun save(product: List<Product>)
 
     @Query("SELECT * FROM product_table")
     fun getAllAsLiveData(): LiveData<List<Product>>
 
-
     @Query("SELECT * FROM product_table")
     suspend fun getAll(): List<Product>
 
+    @Query("DELETE FROM product_table")
+    suspend fun deleteAll()
 }

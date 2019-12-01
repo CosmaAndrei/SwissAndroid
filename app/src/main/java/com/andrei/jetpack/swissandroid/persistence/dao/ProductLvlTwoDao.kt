@@ -13,7 +13,6 @@ interface ProductLvlTwoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun save(product: ProductLvlTwo)
 
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun save(product: List<ProductLvlTwo>)
 
@@ -23,4 +22,6 @@ interface ProductLvlTwoDao {
     @Query("SELECT * FROM product_lvl_two_table")
     fun getAll(): List<ProductLvlTwo>
 
+    @Query("DELETE FROM product_lvl_two_table")
+    suspend fun deleteAll()
 }
