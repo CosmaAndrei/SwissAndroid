@@ -6,5 +6,8 @@
     <string name="products_lvl_two_title">Level two</string>
     <string name="grades_title">Grades</string>
     <string name="products_empty">Page is empty.</string>
+    <string name="something_went_wrong">Something went wrong.</string>
+    <string name="io_error_dialog_positive">Positive</string>
+    <string name="io_error_dialog_negative">Negative</string>
 
 </resources>

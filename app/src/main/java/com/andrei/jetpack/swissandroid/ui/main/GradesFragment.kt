@@ -24,10 +24,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.lang.ref.WeakReference
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class GradesFragment(val listener: IMainViewPagerFragmentListener) : DaggerFragment() {
+class GradesFragment(listener: IMainViewPagerFragmentListener) : DaggerFragment() {
+
+    val listener: WeakReference<IMainViewPagerFragmentListener> = WeakReference(listener)
 
     private lateinit var binding: FragmentGradesBinding
 
@@ -93,6 +96,7 @@ class GradesFragment(val listener: IMainViewPagerFragmentListener) : DaggerFragm
         gradesViewModel.products.observe(viewLifecycleOwner) { result ->
             Timber.d(" GFD subscribeUi Has data: ${!result.data.isNullOrEmpty()}")
             binding.hasProducts = !result.data.isNullOrEmpty()
+            binding.status = result.status
             adapter.submitList(result.data)
         }
     }
@@ -113,7 +117,7 @@ class GradesFragment(val listener: IMainViewPagerFragmentListener) : DaggerFragm
             setOnRefreshListener {
                 CoroutineScope(IO).launch {
                     Timber.d("GFD Refresh data.")
-                    listener.refreshAllData()
+                    listener.get()?.refreshAllData()
                     isRefreshing = false
                 }
             }

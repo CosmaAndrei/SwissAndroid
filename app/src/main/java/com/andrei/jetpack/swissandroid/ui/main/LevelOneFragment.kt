@@ -24,14 +24,17 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.lang.ref.WeakReference
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
-class LevelOneFragment(val listener: IMainViewPagerFragmentListener) : DaggerFragment() {
+class LevelOneFragment (listener: IMainViewPagerFragmentListener): DaggerFragment() {
     companion object {
         val TAG = LevelOneFragment::class.simpleName
     }
+
+    val listener: WeakReference<IMainViewPagerFragmentListener> = WeakReference(listener)
 
     private lateinit var binding: FragmentLvlOneBinding
 
@@ -95,6 +98,7 @@ class LevelOneFragment(val listener: IMainViewPagerFragmentListener) : DaggerFra
         lvlOneProductsViewModel.products.observe(viewLifecycleOwner) { result ->
             Timber.d(TAG, "subscribeUi Has data: ${!result.data.isNullOrEmpty()}")
             binding.hasProducts = !result.data.isNullOrEmpty()
+            binding.status = result.status
             adapter.submitList(result.data)
         }
     }
@@ -114,7 +118,7 @@ class LevelOneFragment(val listener: IMainViewPagerFragmentListener) : DaggerFra
         with(binding.swiperefresh) {
             setOnRefreshListener {
                 CoroutineScope(IO).launch {
-                    listener.refreshAllData()
+                    listener.get()?.refreshAllData()
                     isRefreshing = false
                 }
             }
