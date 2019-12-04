@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.andrei.jetpack.swissandroid.persistence.entities.ProductLvlTwo
 import com.andrei.jetpack.swissandroid.resource.Resource
-import com.andrei.jetpack.swissandroid.ui.main.repos.ProductsLvlTwoRepo
+import com.andrei.jetpack.swissandroid.ui.main.repos.MainScopeProductGradeRepo
 import javax.inject.Inject
 
 class LvlTwoProductsViewModel @Inject constructor(
-    private val repo: ProductsLvlTwoRepo
+    private val repo: MainScopeProductGradeRepo
 ) : ViewModel() {
     suspend fun refreshData() {
         repo.refreshData()

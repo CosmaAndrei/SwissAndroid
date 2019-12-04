@@ -1,13 +1,13 @@
 package com.andrei.jetpack.swissandroid.ui.main.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.andrei.jetpack.swissandroid.ui.main.repos.GradesRepo
+import com.andrei.jetpack.swissandroid.ui.main.repos.MainScopeProductGradeRepo
 import javax.inject.Inject
 
 class MainViewPagerViewModel @Inject constructor(
-    private val gradesRepo: GradesRepo
+    private val repo: MainScopeProductGradeRepo
 ) : ViewModel() {
     suspend fun refreshData() {
-        gradesRepo.refreshData()
+        repo.refreshData()
     }
 }

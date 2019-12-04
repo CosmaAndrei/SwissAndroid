@@ -17,6 +17,9 @@ abstract class FragmentBuildersModule {
         modules = [
             LvlOneProductsViewModelModule::class,
             ProductLvlOnePersistenceModule::class,
+            ProductLvlTwoPersistenceModule::class,
+            GradePersistenceModule::class,
+            GradeApiModule::class,
             ProductApiModule::class
         ]
     )
@@ -26,9 +29,12 @@ abstract class FragmentBuildersModule {
     @ContributesAndroidInjector(
         modules = [
             LvlTwoProductsViewModelModule::class,
+            LvlOneProductsViewModelModule::class,
+            ProductLvlOnePersistenceModule::class,
             ProductLvlTwoPersistenceModule::class,
-            ProductApiModule::class
-        ]
+            GradePersistenceModule::class,
+            GradeApiModule::class,
+            ProductApiModule::class]
     )
     abstract fun contributeLevelTwoFragment(): LevelTwoFragment
 
@@ -36,12 +42,12 @@ abstract class FragmentBuildersModule {
     @ContributesAndroidInjector(
         modules = [
             GradesViewModelModule::class,
-            GradeApiModule::class,
-            GradePersistenceModule::class,
+            LvlOneProductsViewModelModule::class,
             ProductLvlOnePersistenceModule::class,
             ProductLvlTwoPersistenceModule::class,
-            ProductApiModule::class
-        ]
+            GradePersistenceModule::class,
+            GradeApiModule::class,
+            ProductApiModule::class]
     )
     abstract fun contributeGradesFragment(): GradesFragment
 
@@ -49,10 +55,11 @@ abstract class FragmentBuildersModule {
     @ContributesAndroidInjector(
         modules = [
             MainViewPagerViewModule::class,
-            GradeApiModule::class,
-            GradePersistenceModule::class,
+            LvlOneProductsViewModelModule::class,
             ProductLvlOnePersistenceModule::class,
             ProductLvlTwoPersistenceModule::class,
+            GradePersistenceModule::class,
+            GradeApiModule::class,
             ProductApiModule::class
         ]
     )

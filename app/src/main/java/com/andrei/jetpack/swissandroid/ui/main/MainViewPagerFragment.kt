@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
+import androidx.viewpager2.widget.ViewPager2
 import com.andrei.jetpack.swissandroid.R
 import com.andrei.jetpack.swissandroid.databinding.FragmentMainBinding
 import com.andrei.jetpack.swissandroid.ui.main.adapters.GRADE_PAGE
@@ -13,7 +14,6 @@ import com.andrei.jetpack.swissandroid.ui.main.adapters.LEVEL_ONE_PRODUCTS_PAGE
 import com.andrei.jetpack.swissandroid.ui.main.adapters.LEVEL_TWO_PRODUCTS_PAGE
 import com.andrei.jetpack.swissandroid.ui.main.adapters.ProductsPagerAdapter
 import com.andrei.jetpack.swissandroid.ui.main.listeners.IMainViewPagerFragmentListener
-import com.andrei.jetpack.swissandroid.ui.main.viewmodels.LvlOneProductsViewModel
 import com.andrei.jetpack.swissandroid.ui.main.viewmodels.MainViewPagerViewModel
 import com.andrei.jetpack.swissandroid.viewmodel.ViewModelProviderFactory
 import com.google.android.material.tabs.TabLayoutMediator
@@ -27,6 +27,8 @@ class MainViewPagerFragment : DaggerFragment(), IMainViewPagerFragmentListener {
 
     private lateinit var mainViewPagerViewModel: MainViewPagerViewModel
 
+    private lateinit var viewPager: ViewPager2
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,7 +40,8 @@ class MainViewPagerFragment : DaggerFragment(), IMainViewPagerFragmentListener {
         val binding = FragmentMainBinding.inflate(inflater, container, false)
 
         val tabLayout = binding.tabs
-        val viewPager = binding.viewPager
+
+        viewPager = binding.viewPager
 
         viewPager.adapter = ProductsPagerAdapter(this, this)
 
@@ -62,6 +65,8 @@ class MainViewPagerFragment : DaggerFragment(), IMainViewPagerFragmentListener {
     }
 
     override suspend fun refreshAllData() {
+        viewPager.isUserInputEnabled = false
         mainViewPagerViewModel.refreshData()
+        viewPager.isUserInputEnabled = true
     }
 }

@@ -6,8 +6,6 @@ import com.andrei.jetpack.swissandroid.ui.main.GradesFragment
 import com.andrei.jetpack.swissandroid.ui.main.LevelOneFragment
 import com.andrei.jetpack.swissandroid.ui.main.LevelTwoFragment
 import com.andrei.jetpack.swissandroid.ui.main.listeners.IMainViewPagerFragmentListener
-import com.andrei.jetpack.swissandroid.ui.main.repos.GradesRepo
-import javax.inject.Inject
 
 
 const val LEVEL_ONE_PRODUCTS_PAGE = 0
