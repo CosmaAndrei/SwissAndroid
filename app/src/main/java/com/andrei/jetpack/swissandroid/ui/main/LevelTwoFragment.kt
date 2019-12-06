@@ -10,6 +10,8 @@ import androidx.lifecycle.observe
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import com.andrei.jetpack.swissandroid.components.IIOErrorDialogListener
+import com.andrei.jetpack.swissandroid.components.IOErrorDialog
 import com.andrei.jetpack.swissandroid.databinding.FragmentLvlTwoBinding
 import com.andrei.jetpack.swissandroid.ui.main.adapters.ProductsLvlTwoRVAdapter
 import com.andrei.jetpack.swissandroid.ui.main.listeners.IMainViewPagerFragmentListener
@@ -25,6 +27,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.ref.WeakReference
+import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -32,7 +35,10 @@ class LevelTwoFragment(listener: IMainViewPagerFragmentListener) : DaggerFragmen
     companion object {
         val TAG = LevelTwoFragment::class.simpleName
     }
-    val listener: WeakReference<IMainViewPagerFragmentListener> = WeakReference(listener)
+
+    private val listener: WeakReference<IMainViewPagerFragmentListener> = WeakReference(listener)
+
+    private val dialogId = UUID.randomUUID()
 
     private lateinit var binding: FragmentLvlTwoBinding
 
@@ -65,6 +71,8 @@ class LevelTwoFragment(listener: IMainViewPagerFragmentListener) : DaggerFragmen
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Timber.d("LL2!")
+
         lvlTwoProductsViewModel =
             ViewModelProviders.of(this, providerFactory).get(LvlTwoProductsViewModel::class.java)
 
@@ -98,6 +106,7 @@ class LevelTwoFragment(listener: IMainViewPagerFragmentListener) : DaggerFragmen
             binding.hasProducts = !result.data.isNullOrEmpty()
             binding.status = result.status
             adapter.submitList(result.data)
+            Timber.d("LL2 UI subscribed!")
         }
     }
 
@@ -116,7 +125,17 @@ class LevelTwoFragment(listener: IMainViewPagerFragmentListener) : DaggerFragmen
         with(binding.swiperefresh) {
             setOnRefreshListener {
                 CoroutineScope(Dispatchers.IO).launch {
-                    listener.get()?.refreshAllData()
+                    try {
+                        listener.get()?.refreshAllData()
+                    } catch (e: Exception) {
+                        IOErrorDialog.NETWORK(object : IIOErrorDialogListener {
+                            override fun onPositiveAction(dialogId: UUID) {
+                            }
+
+                            override fun onNegativeAction(dialogId: UUID) {
+                            }
+                        }, dialogId, e.message!!).show(childFragmentManager, "IOL1FragED")
+                    }
                     isRefreshing = false
                 }
             }

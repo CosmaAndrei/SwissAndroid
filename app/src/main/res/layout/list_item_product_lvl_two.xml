@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="clickListener"
-            type="android.view.View.OnClickListener" />
+            type="android.view.View.OnClickListener"/>
 
         <variable
             name="viewModel"
-            type="com.andrei.jetpack.swissandroid.ui.main.viewmodels.ProductItemLvlTwoViewModel" />
+            type="com.andrei.jetpack.swissandroid.ui.main.viewmodels.ProductItemLvlTwoViewModel"/>
     </data>
 
 
-    <FrameLayout
-        android:layout_width="match_parent"
+    <com.google.android.material.card.MaterialCardView
         android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="16dp"
         android:onClick="@{clickListener}">
-
         <TextView
             android:id="@+id/plant_name"
             android:layout_width="wrap_content"
@@ -30,7 +30,6 @@
             android:textScaleX="2"
             android:scaleY="2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-    </FrameLayout>
+            app:layout_constraintStart_toStartOf="parent"/>
+    </com.google.android.material.card.MaterialCardView>
 </layout>

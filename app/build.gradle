@@ -51,7 +51,6 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:${rootProject.androidxSwipeToRefreshVersion}"
 
 
-
     /*Test*/
     androidTestImplementation "androidx.test.ext:junit:${rootProject.androidxJunitVersion}"
     androidTestImplementation "androidx.test:runner:${rootProject.androidxTestRunnerVersion}"

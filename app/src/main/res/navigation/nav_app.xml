@@ -25,7 +25,7 @@
         android:name="com.andrei.jetpack.swissandroid.ui.detailone.LvlOneDetailFragment"
         android:label="LvlOneDetailFragment">
         <argument
-            android:name="plantId"
+            android:name="product"
             app:argType="integer" />
 
     </fragment>

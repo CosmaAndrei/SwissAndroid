@@ -10,6 +10,8 @@ import androidx.lifecycle.observe
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import com.andrei.jetpack.swissandroid.components.IIOErrorDialogListener
+import com.andrei.jetpack.swissandroid.components.IOErrorDialog
 import com.andrei.jetpack.swissandroid.databinding.FragmentLvlOneBinding
 import com.andrei.jetpack.swissandroid.ui.main.adapters.ProductsRVAdapter
 import com.andrei.jetpack.swissandroid.ui.main.listeners.IMainViewPagerFragmentListener
@@ -25,16 +27,19 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.ref.WeakReference
+import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
-class LevelOneFragment (listener: IMainViewPagerFragmentListener): DaggerFragment() {
+class LevelOneFragment(listener: IMainViewPagerFragmentListener) : DaggerFragment() {
     companion object {
         val TAG = LevelOneFragment::class.simpleName
     }
 
-    val listener: WeakReference<IMainViewPagerFragmentListener> = WeakReference(listener)
+    private val listener: WeakReference<IMainViewPagerFragmentListener> = WeakReference(listener)
+
+    private val dialogId = UUID.randomUUID()
 
     private lateinit var binding: FragmentLvlOneBinding
 
@@ -67,11 +72,14 @@ class LevelOneFragment (listener: IMainViewPagerFragmentListener): DaggerFragmen
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Timber.d("LL1!")
         lvlOneProductsViewModel =
             ViewModelProviders.of(this, providerFactory).get(LvlOneProductsViewModel::class.java)
 
         binding = FragmentLvlOneBinding.inflate(inflater, container, false)
+
         val adapter = ProductsRVAdapter()
+
         binding.productList.adapter = adapter
 
         subscribeUi(adapter, binding)
@@ -118,7 +126,17 @@ class LevelOneFragment (listener: IMainViewPagerFragmentListener): DaggerFragmen
         with(binding.swiperefresh) {
             setOnRefreshListener {
                 CoroutineScope(IO).launch {
-                    listener.get()?.refreshAllData()
+                    try {
+                        listener.get()?.refreshAllData()
+                    } catch (e: Exception) {
+                        IOErrorDialog.NETWORK(object : IIOErrorDialogListener {
+                            override fun onPositiveAction(dialogId: UUID) {
+                            }
+
+                            override fun onNegativeAction(dialogId: UUID) {
+                            }
+                        }, dialogId, e.message!!).show(childFragmentManager, "IOL1FragED")
+                    }
                     isRefreshing = false
                 }
             }

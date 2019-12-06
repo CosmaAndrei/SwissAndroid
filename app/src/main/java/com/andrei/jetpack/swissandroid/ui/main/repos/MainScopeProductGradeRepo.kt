@@ -14,10 +14,7 @@ import com.andrei.jetpack.swissandroid.persistence.entities.Product
 import com.andrei.jetpack.swissandroid.persistence.entities.ProductLvlTwo
 import com.andrei.jetpack.swissandroid.resource.*
 import com.andrei.jetpack.swissandroid.util.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import retrofit2.Response
 import timber.log.Timber
 import javax.inject.Inject
@@ -30,11 +27,32 @@ class MainScopeProductGradeRepo @Inject constructor(
     private val productDao: ProductDao,
     private val productLvlTwoDao: ProductLvlTwoDao
 ) {
+    private val futureFetchLvlOneItems = GlobalScope.async(start = CoroutineStart.LAZY) {
+        fetch(
+            LVL_ONE_REQ_EXPIRATION_TIME_KEY
+        ) {
+            productApi.getLvlOneProducts()
+        }
+    }
+
+    private val futureFetchLvlTwoItems = GlobalScope.async(start = CoroutineStart.LAZY) {
+        fetch(
+            LVL_TWO_REQ_EXPIRATION_TIME_KEY
+        ) {
+            productApi.getLvlTwoProducts()
+        }
+    }
+
+    private val futureItemsLvlOneSaved = GlobalScope.async(start = CoroutineStart.LAZY) { }
+
+    private val futureItemsLvlTwoSaved = GlobalScope.async(start = CoroutineStart.LAZY) { }
+
     fun getLvlOneProductsAsLiveData(): LiveData<Resource<List<Product>>> = object :
         NetworkBoundResource<List<Product>, ProductsDTO>() {
         override suspend fun saveCallResult(item: ProductsDTO) {
             productDao.deleteAll()
             productDao.save(item.products.toPersistable())
+            futureItemsLvlOneSaved.start()
         }
 
         override fun shouldFetch(data: List<Product>?): Boolean =
@@ -49,11 +67,9 @@ class MainScopeProductGradeRepo @Inject constructor(
                 override fun onActive() {
                     super.onActive()
                     CoroutineScope(Dispatchers.IO).launch {
-                        val result = fetch(
-                            LVL_ONE_REQ_EXPIRATION_TIME_KEY
-                        ) {
-                            productApi.getLvlOneProducts()
-                        }
+                        Timber.d("LL1 FETCH STARTED!")
+                        futureFetchLvlOneItems.start()
+                        val result = futureFetchLvlOneItems.await()
 
                         withContext(Dispatchers.Main) {
                             value = result
@@ -69,6 +85,7 @@ class MainScopeProductGradeRepo @Inject constructor(
         override suspend fun saveCallResult(item: ProductsDTO) {
             productLvlTwoDao.deleteAll()
             productLvlTwoDao.save(item.products.toPersistableLvlTwo())
+            futureItemsLvlTwoSaved.start()
         }
 
         override fun shouldFetch(data: List<ProductLvlTwo>?): Boolean =
@@ -82,11 +99,10 @@ class MainScopeProductGradeRepo @Inject constructor(
                 override fun onActive() {
                     super.onActive()
                     CoroutineScope(Dispatchers.IO).launch {
-                        val result = fetch(
-                            LVL_TWO_REQ_EXPIRATION_TIME_KEY
-                        ) {
-                            productApi.getLvlTwoProducts()
-                        }
+                        Timber.d("LL2 FETCH STARTED!")
+                        futureFetchLvlTwoItems.start()
+                        val result = futureFetchLvlTwoItems.await()
+
                         withContext(Dispatchers.Main) {
                             value = result
                         }
@@ -115,6 +131,11 @@ class MainScopeProductGradeRepo @Inject constructor(
                 override fun onActive() {
                     super.onActive()
                     CoroutineScope(Dispatchers.IO).launch {
+                        // The purpose of this delay is to give time for
+                        // the first to fragments to start fetching the needed data
+                        delay(1000)
+                        Timber.d("LLG FETCH STARTED!")
+
                         val result: ApiResponse<List<Pair<String, GradeDTO>>> = fetchGrades(false)
 
                         withContext(Dispatchers.Main) {
@@ -151,13 +172,14 @@ class MainScopeProductGradeRepo @Inject constructor(
 
     // To make the query we need valid level one and two products.
     private suspend fun fetchGrades(isRefresh: Boolean): ApiResponse<List<Pair<String, GradeDTO>>> {
-        if (isRefresh || prefs.isNetworkBoundResourceCacheExpired(LVL_ONE_REQ_EXPIRATION_TIME_KEY)) {
-            Timber.d("GFD Refresh lvl one.")
-        }
 
-        if (isRefresh || prefs.isNetworkBoundResourceCacheExpired(LVL_TWO_REQ_EXPIRATION_TIME_KEY)) {
-            Timber.d("GFD Refresh lvl two.")
-        }
+        futureFetchLvlOneItems.await()
+
+        futureItemsLvlOneSaved.await()
+
+        futureItemsLvlTwoSaved.await()
+
+        futureItemsLvlTwoSaved.await()
 
         val lvlOneCachedProducts: List<Product> = productDao.getAll()
         Timber.d("GFD lvl one items:${lvlOneCachedProducts}.")
