@@ -27,16 +27,16 @@ class ProductsLvlTwoRVAdapter :
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.setClickListener { view ->
-                binding.viewModel?.id?.let { id ->
-                    navigateToDetails(id, view)
+                binding.viewModel?.let { it ->
+                    navigateToDetails(it.id, it.name,view)
                 }
             }
         }
 
-        private fun navigateToDetails(productId: Int, view: View) {
+        private fun navigateToDetails(productId: Int, title: String, view: View) {
             val direction =
                 MainViewPagerFragmentDirections.actionMainViewPagerFragmentToLvlTwoDetailFragment(
-                    productId
+                    productId, title
                 )
             view.findNavController().navigate(direction)
         }

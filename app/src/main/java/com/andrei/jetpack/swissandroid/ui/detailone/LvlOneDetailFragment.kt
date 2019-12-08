@@ -4,19 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
-import com.andrei.jetpack.swissandroid.databinding.FragmentLvlOneBinding
 import com.andrei.jetpack.swissandroid.databinding.FragmentLvlOneDetailsBinding
-import com.andrei.jetpack.swissandroid.ui.main.LevelOneFragment
-import com.andrei.jetpack.swissandroid.ui.main.adapters.ProductsRVAdapter
-import com.andrei.jetpack.swissandroid.ui.main.viewmodels.LvlOneProductsViewModel
 import com.andrei.jetpack.swissandroid.viewmodel.ViewModelProviderFactory
 import dagger.android.support.DaggerFragment
-import timber.log.Timber
 import javax.inject.Inject
 
 class LvlOneDetailFragment : DaggerFragment() {
@@ -43,6 +37,11 @@ class LvlOneDetailFragment : DaggerFragment() {
         subscribeUi(binding)
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as AppCompatActivity).supportActionBar?.title = args.title
     }
 
     private fun subscribeUi(binding: FragmentLvlOneDetailsBinding) {

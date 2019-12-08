@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
-import com.andrei.jetpack.swissandroid.databinding.FragmentLvlOneDetailsBinding
 import com.andrei.jetpack.swissandroid.databinding.FragmentLvlTwoDetailsBinding
 import com.andrei.jetpack.swissandroid.viewmodel.ViewModelProviderFactory
 import dagger.android.support.DaggerFragment
@@ -36,6 +36,11 @@ class LvlTwoDetailFragment : DaggerFragment() {
         subscribeUi(binding)
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as AppCompatActivity).supportActionBar?.title = args.title
     }
 
     private fun subscribeUi(binding: FragmentLvlTwoDetailsBinding) {

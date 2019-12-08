@@ -53,6 +53,11 @@ class MainViewPagerFragment : DaggerFragment(), IMainViewPagerFragmentListener {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        (activity as AppCompatActivity).supportActionBar?.title = "Swiss Android"
+    }
+
     private fun getTabTitle(position: Int): String? {
         return when (position) {
             LEVEL_ONE_PRODUCTS_PAGE -> getString(R.string.products_lvl_one_title)
