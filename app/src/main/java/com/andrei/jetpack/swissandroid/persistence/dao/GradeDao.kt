@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import com.andrei.jetpack.swissandroid.persistence.entities.Grade
+import com.andrei.jetpack.swissandroid.persistence.entities.Product
 
 @Dao
 interface GradeDao {
@@ -20,6 +21,9 @@ interface GradeDao {
 
     @Query("SELECT * FROM grade_table")
     suspend fun getAll(): List<Grade>
+
+    @Query("SELECT * FROM grade_table WHERE product_id == :id")
+    suspend fun getOne(id: String): Grade
 
     @Query("DELETE FROM grade_table")
     suspend fun deleteAll()
