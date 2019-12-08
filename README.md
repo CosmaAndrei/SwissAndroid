@@ -2,6 +2,40 @@
 
 This application is currently under development.
 
+# Application dagger dependency injection scopes
+
+[![vwzm02.png](https://b.imge.to/2019/12/08/vwzm02.png)](https://imge.to/i/vwzm02)
+
+Application scope provides:
+* Database instance;
+* Retrofit instance;
+* Shared prefs instance;
+* View Model factory instance;
+* App activities builder.
+
+Main activity scope provides:
+* Product level one API;
+* Product level two API;
+* Grade API;
+* Product level one dao;
+* Product level two dao;
+* Grade dao;
+* Main activity fragments builder.
+
+Main view pager scope provides:
+* Main view pager fragment view model;
+* Products level one fragment view model;
+* Products level two fragment view model;
+* Grades view model.
+
+Detail scope provides:
+* Product level one detail fragment view model;
+* Product level two detail fragment view model.
+
+# App navigation
+
+[![vwzYYC.png](https://a.imge.to/2019/12/08/vwzYYC.png)](https://imge.to/i/vwzYYC)
+
 Libraries Used
 --------------
 * [Foundation][0] - Components for core system capabilities, Kotlin extensions and support for
