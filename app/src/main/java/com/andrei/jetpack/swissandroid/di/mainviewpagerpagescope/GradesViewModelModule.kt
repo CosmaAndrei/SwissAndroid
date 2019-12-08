@@ -1,9 +1,7 @@
-package com.andrei.jetpack.swissandroid.di.main
+package com.andrei.jetpack.swissandroid.di.mainviewpagerpagescope
 
 import androidx.lifecycle.ViewModel
 import com.andrei.jetpack.swissandroid.ui.main.viewmodels.GradesViewModel
-import com.andrei.jetpack.swissandroid.ui.main.viewmodels.LvlOneProductsViewModel
-import com.andrei.jetpack.swissandroid.ui.main.viewmodels.LvlTwoProductsViewModel
 import com.andrei.jetpack.swissandroid.viewmodel.ViewModelKey
 import dagger.Binds
 import dagger.Module
@@ -14,7 +12,7 @@ import dagger.multibindings.IntoMap
 @Module
 abstract class GradesViewModelModule {
 
-    @MainScope
+    @MainViewPagerPageScope
     @Binds
     @IntoMap
     @ViewModelKey(GradesViewModel::class) // PROVIDE YOUR OWN MODELS HERE

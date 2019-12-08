@@ -1,4 +1,4 @@
-package com.andrei.jetpack.swissandroid.di.main
+package com.andrei.jetpack.swissandroid.di.mainactivityscope
 
 import com.andrei.jetpack.swissandroid.network.GradeApi
 import dagger.Module
@@ -9,7 +9,7 @@ import retrofit2.Retrofit
 @Module
 object GradeApiModule {
 
-    @MainScope
+    @MainActivityScope
     @JvmStatic
     @Provides
     fun provideGradeApi(retrofit: Retrofit): GradeApi = retrofit.create(GradeApi::class.java)

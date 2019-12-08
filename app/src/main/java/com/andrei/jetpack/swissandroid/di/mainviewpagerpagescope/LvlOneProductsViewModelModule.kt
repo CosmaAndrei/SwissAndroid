@@ -1,4 +1,4 @@
-package com.andrei.jetpack.swissandroid.di.main
+package com.andrei.jetpack.swissandroid.di.mainviewpagerpagescope
 
 import androidx.lifecycle.ViewModel
 import com.andrei.jetpack.swissandroid.ui.main.viewmodels.LvlOneProductsViewModel
@@ -12,7 +12,7 @@ import dagger.multibindings.IntoMap
 @Module
 abstract class LvlOneProductsViewModelModule {
 
-    @MainScope
+    @MainViewPagerPageScope
     @Binds
     @IntoMap
     @ViewModelKey(LvlOneProductsViewModel::class) // PROVIDE YOUR OWN MODELS HERE

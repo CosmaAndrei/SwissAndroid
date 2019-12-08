@@ -1,4 +1,4 @@
-package com.andrei.jetpack.swissandroid.di.main
+package com.andrei.jetpack.swissandroid.di.mainactivityscope
 
 import com.andrei.jetpack.swissandroid.persistence.AppDatabase
 import com.andrei.jetpack.swissandroid.persistence.dao.GradeDao
@@ -7,7 +7,7 @@ import dagger.Provides
 
 @Module
 object GradePersistenceModule {
-    @MainScope
+    @MainActivityScope
     @JvmStatic
     @Provides
     fun provideGradeDao(appDatabase: AppDatabase): GradeDao = appDatabase.gradeDao()

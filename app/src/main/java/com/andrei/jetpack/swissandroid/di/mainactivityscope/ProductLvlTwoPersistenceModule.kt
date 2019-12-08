@@ -1,4 +1,4 @@
-package com.andrei.jetpack.swissandroid.di.main
+package com.andrei.jetpack.swissandroid.di.mainactivityscope
 
 import com.andrei.jetpack.swissandroid.persistence.AppDatabase
 import com.andrei.jetpack.swissandroid.persistence.dao.ProductLvlTwoDao
@@ -7,7 +7,8 @@ import dagger.Provides
 
 @Module
 object ProductLvlTwoPersistenceModule {
-    @MainScope
+
+    @MainActivityScope
     @JvmStatic
     @Provides
     fun provideProductLvlTwoDao(appDatabase: AppDatabase): ProductLvlTwoDao =

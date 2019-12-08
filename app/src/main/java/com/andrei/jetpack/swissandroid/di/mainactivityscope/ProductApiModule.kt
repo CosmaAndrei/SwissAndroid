@@ -1,4 +1,4 @@
-package com.andrei.jetpack.swissandroid.di.main
+package com.andrei.jetpack.swissandroid.di.mainactivityscope
 
 import com.andrei.jetpack.swissandroid.network.ProductApi
 import dagger.Module
@@ -9,7 +9,7 @@ import retrofit2.Retrofit
 @Module
 object ProductApiModule {
 
-    @MainScope
+    @MainActivityScope
     @JvmStatic
     @Provides
     fun provideProductApi(retrofit: Retrofit): ProductApi = retrofit.create(ProductApi::class.java)

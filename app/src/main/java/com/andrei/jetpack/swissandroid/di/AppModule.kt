@@ -40,13 +40,4 @@ object AppModule {
             AppDatabase::class.java,
             DATABASE_NAME
         ).build()
-
-    // This is a test dependency to see if dagger works
-    @Singleton
-    @JvmStatic
-    @Provides
-    fun testString(): String {
-        return "Dagger WORKS!"
-    }
-
 }

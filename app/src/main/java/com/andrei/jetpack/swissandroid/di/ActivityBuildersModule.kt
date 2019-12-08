@@ -1,5 +1,7 @@
 package com.andrei.jetpack.swissandroid.di
 
+import com.andrei.jetpack.swissandroid.di.mainactivityscope.*
+import com.andrei.jetpack.swissandroid.di.mainactivityscope.MainActivityFragmentsBuildersModule
 import com.andrei.jetpack.swissandroid.ui.MainActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -12,6 +14,16 @@ import dagger.android.ContributesAndroidInjector
 abstract class ActivityBuildersModule {
 
     // Here we can define modules that are visible only in one activity
-    @ContributesAndroidInjector
+    @MainActivityScope
+    @ContributesAndroidInjector(
+        modules = [
+            GradeApiModule::class,
+            GradePersistenceModule::class,
+            ProductApiModule::class,
+            ProductLvlOnePersistenceModule::class,
+            ProductLvlTwoPersistenceModule::class,
+            MainActivityFragmentsBuildersModule::class
+        ]
+    )
     abstract fun contributeMainActivity(): MainActivity
 }

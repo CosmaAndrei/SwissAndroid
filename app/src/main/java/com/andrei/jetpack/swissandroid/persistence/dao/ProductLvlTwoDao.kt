@@ -22,6 +22,9 @@ interface ProductLvlTwoDao {
     @Query("SELECT * FROM product_lvl_two_table")
     fun getAll(): List<ProductLvlTwo>
 
+    @Query("SELECT * FROM product_lvl_two_table WHERE id == :id")
+    fun getOne(id: Int): LiveData<ProductLvlTwo>
+
     @Query("DELETE FROM product_lvl_two_table")
     suspend fun deleteAll()
 }

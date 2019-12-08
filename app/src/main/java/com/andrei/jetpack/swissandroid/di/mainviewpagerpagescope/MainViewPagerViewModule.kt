@@ -1,4 +1,4 @@
-package com.andrei.jetpack.swissandroid.di.main
+package com.andrei.jetpack.swissandroid.di.mainviewpagerpagescope
 
 import androidx.lifecycle.ViewModel
 import com.andrei.jetpack.swissandroid.ui.main.viewmodels.MainViewPagerViewModel
@@ -10,7 +10,7 @@ import dagger.multibindings.IntoMap
 @Module
 abstract class MainViewPagerViewModule {
 
-    @MainScope
+    @MainViewPagerPageScope
     @Binds
     @IntoMap
     @ViewModelKey(MainViewPagerViewModel::class)

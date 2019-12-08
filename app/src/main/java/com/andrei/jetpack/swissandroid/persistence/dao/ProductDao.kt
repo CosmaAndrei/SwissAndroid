@@ -23,4 +23,7 @@ interface ProductDao {
 
     @Query("DELETE FROM product_table")
     suspend fun deleteAll()
+
+    @Query("SELECT * FROM product_table WHERE id == :id")
+    fun getOne(id: Int): LiveData<Product>
 }
